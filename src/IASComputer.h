@@ -4,6 +4,9 @@
 #include <functional>
 #include <unordered_map>
 
+constexpr uint8_t OPCODE_BITS   = 3;
+constexpr uint8_t MEMORY_BITS   = 5;
+
 using Memory  = std::array<uint8_t, 64>;
 using RegType = int16_t;
 

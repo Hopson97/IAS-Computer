@@ -1,18 +1,21 @@
 #include "IASAssembler.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iterator>
 #include <vector>
+#include <algorithm>
+#include <bitset>
 
 namespace
 {
-    const std::unordered_map<std::string, int> strToOpcode
+    const std::unordered_map<std::string, uint8_t> strToOpcode
     {
         {"add", 0},
         {"sub", 1},
-        {"str", 2},
-        {"lod", 3},
+        {"sta", 2},
+        {"lda", 3},
         {"inp", 4},
         {"out", 5},
         {"jip", 6},
@@ -26,6 +29,11 @@ namespace
             std::istream_iterator<std::string>()
         };
         return tokens;
+    }
+
+    void toLowerCase(std::string& str)
+    {
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     }
 
 }
@@ -59,9 +67,26 @@ void IASAssembler::parse(std::ifstream& inFile)
 void IASAssembler::parseLine(const std::string& line)
 {
     auto tokens = split(line);
-    for (auto& token : tokens) {
-        std::cout << token << " ... ";
+    toLowerCase(tokens[0]);
+    auto opcode = strToOpcode.at(tokens.at(0));
+
+    uint8_t instruction = opcode << MEMORY_BITS;
+    if (tokens.size() == 2) {
+        uint8_t address = (uint8_t)std::stoi(tokens[1]);
+        instruction |= address;
     }
-    std::cout << "\n";
+    m_assembledCode[m_instructionCount++] = instruction;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

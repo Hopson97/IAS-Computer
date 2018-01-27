@@ -5,8 +5,8 @@
 int main()
 {
     IASAssembler assembler;
-    assembler.assembleFile("tests/test1.ias");
-
+    Memory memory = assembler.assembleFile("tests/test1.ias");
+/*
     Memory memory;
     memory.fill(0);
     memory[0] = 0b100'00000;    //INP
@@ -14,7 +14,7 @@ int main()
     memory[2] = 0b100'00000;    //INP
     memory[3] = 0b000'10000;    //ADD 32
     memory[4] = 0b101'00000;    //OUT
-
+*/
     IASComputer computer(memory);
     computer.run();
 

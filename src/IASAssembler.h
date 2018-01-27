@@ -17,6 +17,7 @@ class IASAssembler
         void parseLine  (const std::string& line);
 
         Memory m_assembledCode;
+        uint16_t m_instructionCount = 0;
 
 };
 

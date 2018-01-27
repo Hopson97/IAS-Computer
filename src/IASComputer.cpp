@@ -3,9 +3,6 @@
 #include <iostream>
 #include <bitset>
 
-constexpr uint8_t OPCODE_BITS   = 3;
-constexpr uint8_t MEMORY_BITS   = 5;
-
 IASComputer::IASComputer(const Memory& memory)
 :   m_memory        (memory)
 ,   m_commandMap {
@@ -28,6 +25,7 @@ void IASComputer::run()
         }
         fetch();
         execute();
+        printOpcodeAndAddress();
     }
 }
 
