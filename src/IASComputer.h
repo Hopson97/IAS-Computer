@@ -21,6 +21,9 @@ class IASComputer
         void subtract   ();
         void store      ();
         void load       ();
+        void input      ();
+        void output     ();
+        void jumpIfPos  ();
 
         Memory m_memory;
         std::unordered_map<uint8_t, std::function<void(void)>> m_commandMap;
