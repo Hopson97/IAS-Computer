@@ -16,10 +16,10 @@ IASComputer::IASComputer(const Memory& memory)
 void IASComputer::run()
 {
     while (true) {
-        fetch();
-        if (m_instructionRegister == ((1 << 3) + 1)) {
+        if (m_programCounter == m_memory.size()){
             break;
         }
+        fetch();
         execute();
     }
 }
@@ -45,7 +45,7 @@ void IASComputer::execute()
 
 void IASComputer::add()
 {
-
+    std::cout << "adding\n";
 }
 
 void IASComputer::subtract()
