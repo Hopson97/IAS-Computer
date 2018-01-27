@@ -64,6 +64,7 @@ void IASComputer::subtract()
 void IASComputer::store()
 {
     auto address = getMemAddrFromInstr();
+    m_memory.at(address) = m_accumulator;
 }
 
 void IASComputer::load()
