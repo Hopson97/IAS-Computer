@@ -9,6 +9,7 @@ constexpr uint8_t MEMORY_BITS  = 5;
 IASComputer::IASComputer(const Memory& memory)
 :   m_memory        (memory)
 ,   m_commandMap {
+        //Bind op-codes to member functions
         {0, std::bind(IASComputer::add,         this)},
         {1, std::bind(IASComputer::subtract,    this)},
         {2, std::bind(IASComputer::store,       this)},
@@ -72,19 +73,24 @@ void IASComputer::load()
     m_accumulator = getValueStoredAtInstrAddress();
 }
 
+//TODO use I/O registers?
 void IASComputer::input()
 {
-
+    std::cout << "Please input a value: ";
+    std::cin >> m_accumulator;
 }
 
+//TODO use I/O registers?
 void IASComputer::output()
 {
-
+    std::cout << "Output: " << (int)m_accumulator;
 }
 
 void IASComputer::jumpIfPos()
 {
-     auto address = getMemAddrFromInstr();
+    if (m_accumulator > 0) {
+        m_programCounter = getValueStoredAtInstrAddress();
+    }
 }
 
 void IASComputer::printOpcodeAndAddress()
@@ -94,18 +100,21 @@ void IASComputer::printOpcodeAndAddress()
                 << "\n";
 }
 
-//Extracts the memory address from
+//Extracts the memory address from the instruction register
 uint8_t IASComputer::getMemAddrFromInstr()
 {
     uint8_t address = m_instructionRegister << OPCODE_BITS;
     return address >> OPCODE_BITS;
 }
 
+//Extracts the opcode address from the instruction register
 uint8_t IASComputer::getOpcodeFromInstr()
 {
     return m_instructionRegister >> MEMORY_BITS;
 }
 
+//Extracts the memory address from the instruction register
+//and gets the value stored there
 uint8_t IASComputer::getValueStoredAtInstrAddress()
 {
     return m_memory.at(getMemAddrFromInstr());

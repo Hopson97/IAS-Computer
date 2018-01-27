@@ -4,7 +4,7 @@
 #include <functional>
 #include <unordered_map>
 
-using Memory  = std::array<uint8_t, 32>;
+using Memory  = std::array<uint8_t, 64>;
 using RegType = int16_t;
 
 class IASComputer
