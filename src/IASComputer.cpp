@@ -53,21 +53,22 @@ void IASComputer::execute()
 //Commands
 void IASComputer::add()
 {
+    auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::subtract()
 {
-
+     auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::store()
 {
-
+     auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::load()
 {
-
+     auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::input()
@@ -82,7 +83,7 @@ void IASComputer::output()
 
 void IASComputer::jumpIfPos()
 {
-
+     auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::printOpcodeAndAddress()
