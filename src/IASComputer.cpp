@@ -101,21 +101,21 @@ void IASComputer::printOpcodeAndAddress()
 }
 
 //Extracts the memory address from the instruction register
-uint8_t IASComputer::getMemAddrFromInstr()
+uint8_t IASComputer::getMemAddrFromInstr() const
 {
     uint8_t address = m_instructionRegister << OPCODE_BITS;
     return address >> OPCODE_BITS;
 }
 
 //Extracts the opcode address from the instruction register
-uint8_t IASComputer::getOpcodeFromInstr()
+uint8_t IASComputer::getOpcodeFromInstr() const
 {
     return m_instructionRegister >> MEMORY_BITS;
 }
 
 //Extracts the memory address from the instruction register
 //and gets the value stored there
-uint8_t IASComputer::getValueStoredAtInstrAddress()
+uint8_t IASComputer::getValueStoredAtInstrAddress() const
 {
     return m_memory.at(getMemAddrFromInstr());
 }

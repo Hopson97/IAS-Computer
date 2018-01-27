@@ -25,9 +25,9 @@ class IASComputer
         void output     ();
         void jumpIfPos  ();
 
-        uint8_t getMemAddrFromInstr();
-        uint8_t getOpcodeFromInstr();
-        uint8_t getValueStoredAtInstrAddress();
+        uint8_t getMemAddrFromInstr() const;
+        uint8_t getOpcodeFromInstr() const;
+        uint8_t getValueStoredAtInstrAddress() const;
 
         void printOpcodeAndAddress();
 

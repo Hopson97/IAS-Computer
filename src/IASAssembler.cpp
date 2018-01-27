@@ -24,6 +24,9 @@ void IASAssembler::parse(std::ifstream& inFile)
 {
     std::string line;
     while (std::getline(inFile, line)) {
-
+        parseLine(line);
     }
+}
+
+void IASAssembler::parseLine(const std::string& line) {
 }

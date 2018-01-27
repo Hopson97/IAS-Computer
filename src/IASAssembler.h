@@ -13,7 +13,8 @@ class IASAssembler
         Memory assembleFile(const char* fileName);
 
     private:
-        void parse(std::ifstream& inFile);
+        void parse      (std::ifstream& inFile);
+        void parseLine  (const std::string& line);
 
         Memory m_assembledCode;
 
