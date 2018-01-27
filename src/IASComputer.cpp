@@ -25,7 +25,6 @@ void IASComputer::run()
         }
         fetch();
         execute();
-        printOpcodeAndAddress();
     }
 }
 
