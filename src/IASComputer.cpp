@@ -1,8 +1,9 @@
 #include "IASComputer.h"
 
 #include <iostream>
+#include <bitset>
 
-constexpr uint8_t OP_CODE_BITS = 3;
+constexpr uint8_t OPCODE_BITS = 3;
 constexpr uint8_t MEMORY_BITS  = 5;
 
 IASComputer::IASComputer(const Memory& memory)
@@ -40,20 +41,18 @@ void IASComputer::fetch()
 //Executes next instruction
 void IASComputer::execute()
 {
-    uint8_t opcode = m_instructionRegister >> MEMORY_BITS;
+    uint8_t opcode = getOpcodeFromInstr();
     try {
         m_commandMap.at(opcode)();
     }
     catch (std::out_of_range& e) {
         std::cout << (int)opcode << " unknown\n";
     }
-
 }
 
 //Commands
 void IASComputer::add()
 {
-    std::cout << "adding\n";
 }
 
 void IASComputer::subtract()
@@ -85,3 +84,23 @@ void IASComputer::jumpIfPos()
 {
 
 }
+
+void IASComputer::printOpcodeAndAddress()
+{
+    std::cout   << std::bitset<8>(getOpcodeFromInstr()) << " "
+                << std::bitset<8>(getMemAddrFromInstr())
+                << "\n";
+}
+
+//Extracts the memory address from
+uint8_t IASComputer::getMemAddrFromInstr()
+{
+    uint8_t address = m_instructionRegister << OPCODE_BITS;
+    return address >> OPCODE_BITS;
+}
+
+uint8_t IASComputer::getOpcodeFromInstr()
+{
+    return m_instructionRegister >> MEMORY_BITS;
+}
+

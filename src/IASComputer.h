@@ -25,6 +25,11 @@ class IASComputer
         void output     ();
         void jumpIfPos  ();
 
+        uint8_t getMemAddrFromInstr();
+        uint8_t getOpcodeFromInstr();
+
+        void printOpcodeAndAddress();
+
         Memory m_memory;
         std::unordered_map<uint8_t, std::function<void(void)>> m_commandMap;
 
