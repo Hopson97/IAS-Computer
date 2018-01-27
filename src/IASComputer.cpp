@@ -37,7 +37,10 @@ void IASComputer::run()
 //Fetches the next instruction from memory
 void IASComputer::fetch()
 {
-    std::cout << "=== BEGIN CYCLE ===\n";
+    #ifdef PRINT_STATE
+    std::cout << "\n ========= A new cycle begins =========\";
+    #endif // PRINT_STATE
+
     m_memAddressRegister    = m_programCounter++;
     printFullState();
     m_memBufferRegister     = m_memory[m_memAddressRegister];
@@ -130,6 +133,7 @@ uint8_t IASComputer::getValueStoredAtInstrAddress() const
 
 void IASComputer::printFullState()
 {
+    #ifdef PRINT_STATE
     std::cout   << "\n"
                 << "\nAccumulator Register      " << std::setw(4) << m_accumulator          << " " << std::bitset<16>(m_accumulator)
                 << "\nMemory Buffer  Register:  " << std::setw(4) << m_memBufferRegister    << " " << std::bitset<8>(m_memBufferRegister)
@@ -137,6 +141,7 @@ void IASComputer::printFullState()
                 << "\nInstruction Register:     " << std::setw(4) << m_instructionRegister  << " " << std::bitset<8>(m_instructionRegister)
                 << "\nProgram Counter Register: " << std::setw(4) << m_programCounter       << " " << std::bitset<8>(m_programCounter)
                 << "\n\n";
+    #endif // PRINT_STATE
 }
 
 

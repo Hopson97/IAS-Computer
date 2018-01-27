@@ -21,6 +21,7 @@ class IASComputer
         void fetch();
         void execute();
 
+        //IAS Custom Instruction Set
         void add        ();
         void subtract   ();
         void store      ();

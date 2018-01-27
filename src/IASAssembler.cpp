@@ -19,8 +19,10 @@ namespace
         {"inp", 4},
         {"out", 5},
         {"jip", 6},
+        {"end", 7}
     };
 
+    //Splits a string at spaces
     auto split(const std::string& str)
     {
         std::istringstream stream(str);
@@ -31,6 +33,7 @@ namespace
         return tokens;
     }
 
+    //Converts string to lower case
     void toLowerCase(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
@@ -43,6 +46,7 @@ IASAssembler::IASAssembler()
     m_assembledCode.fill(0);
 }
 
+//Input a file, outputs a program
 Memory IASAssembler::assembleFile(const char* fileName)
 {
     std::ifstream inFile(fileName);
@@ -57,6 +61,7 @@ Memory IASAssembler::assembleFile(const char* fileName)
 }
 
 
+//Loop through lines and put into memory
 void IASAssembler::parse(std::ifstream& inFile)
 {
     std::string line;
@@ -65,10 +70,11 @@ void IASAssembler::parse(std::ifstream& inFile)
     }
 }
 
+//Parse an single line; extracts both memory and address part of instruction
 void IASAssembler::parseLine(const std::string& line)
 {
     auto tokens = split(line);
-    toLowerCase(tokens[0]);
+    toLowerCase(tokens.at(0));
     auto opcode = strToOpcode.at(tokens.at(0));
 
     uint8_t instruction = opcode << MEMORY_BITS;
