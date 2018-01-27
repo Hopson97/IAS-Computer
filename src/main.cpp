@@ -1,8 +1,12 @@
 #include <iostream>
 #include "IASComputer.h"
+#include "IASAssembler.h"
 
 int main()
 {
+    IASAssembler assembler;
+    assembler.assembleFile("tests/test1.ias");
+
     Memory memory;
     memory.fill(0);
     memory[0] = 0b100'00000;    //INP
