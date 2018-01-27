@@ -53,22 +53,22 @@ void IASComputer::execute()
 //Commands
 void IASComputer::add()
 {
-    auto address = getMemAddrFromInstr();
+    m_accumulator += getValueStoredAtInstrAddress();
 }
 
 void IASComputer::subtract()
 {
-     auto address = getMemAddrFromInstr();
+    m_accumulator -= getValueStoredAtInstrAddress();
 }
 
 void IASComputer::store()
 {
-     auto address = getMemAddrFromInstr();
+    auto address = getMemAddrFromInstr();
 }
 
 void IASComputer::load()
 {
-     auto address = getMemAddrFromInstr();
+    m_accumulator = getValueStoredAtInstrAddress();
 }
 
 void IASComputer::input()
@@ -104,4 +104,11 @@ uint8_t IASComputer::getOpcodeFromInstr()
 {
     return m_instructionRegister >> MEMORY_BITS;
 }
+
+uint8_t IASComputer::getValueStoredAtInstrAddress()
+{
+    return m_memory.at(getMemAddrFromInstr());
+}
+
+
 

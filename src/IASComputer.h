@@ -27,6 +27,7 @@ class IASComputer
 
         uint8_t getMemAddrFromInstr();
         uint8_t getOpcodeFromInstr();
+        uint8_t getValueStoredAtInstrAddress();
 
         void printOpcodeAndAddress();
 
