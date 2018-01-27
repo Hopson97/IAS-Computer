@@ -6,6 +6,7 @@
 
 constexpr uint8_t OPCODE_BITS   = 3;
 constexpr uint8_t MEMORY_BITS   = 5;
+constexpr uint8_t END_OF_FILE   = 7;
 
 using Memory  = std::array<uint8_t, 64>;
 using RegType = int16_t;
@@ -33,6 +34,8 @@ class IASComputer
         uint8_t getValueStoredAtInstrAddress() const;
 
         void printOpcodeAndAddress();
+
+        void printFullState();
 
         Memory m_memory;
         std::unordered_map<uint8_t, std::function<void(void)>> m_commandMap;

@@ -1,6 +1,7 @@
 #include "IASComputer.h"
 
 #include <iostream>
+#include <iomanip>
 #include <bitset>
 
 IASComputer::IASComputer(const Memory& memory)
@@ -17,6 +18,7 @@ IASComputer::IASComputer(const Memory& memory)
     }
 { }
 
+//Handles the fetch and execute cycle
 void IASComputer::run()
 {
     while (true) {
@@ -24,6 +26,10 @@ void IASComputer::run()
             break;
         }
         fetch();
+        //Test for end of instructions
+        if (getOpcodeFromInstr() == END_OF_FILE) {
+            break;
+        }
         execute();
     }
 }
@@ -31,10 +37,15 @@ void IASComputer::run()
 //Fetches the next instruction from memory
 void IASComputer::fetch()
 {
+    std::cout << "=== BEGIN CYCLE ===\n";
     m_memAddressRegister    = m_programCounter++;
+    printFullState();
     m_memBufferRegister     = m_memory[m_memAddressRegister];
+    printFullState();
     m_instructionRegister   = m_memBufferRegister;
+    printFullState();
 }
+
 
 //Executes next instruction
 void IASComputer::execute()
@@ -116,6 +127,34 @@ uint8_t IASComputer::getValueStoredAtInstrAddress() const
 {
     return m_memory.at(getMemAddrFromInstr());
 }
+
+void IASComputer::printFullState()
+{
+    std::cout   << "\n"
+                << "\nAccumulator Register      " << std::setw(4) << m_accumulator          << " " << std::bitset<16>(m_accumulator)
+                << "\nMemory Buffer  Register:  " << std::setw(4) << m_memBufferRegister    << " " << std::bitset<8>(m_memBufferRegister)
+                << "\nMemory Address Register:  " << std::setw(4) << m_memAddressRegister   << " " << std::bitset<8>(m_memAddressRegister)
+                << "\nInstruction Register:     " << std::setw(4) << m_instructionRegister  << " " << std::bitset<8>(m_instructionRegister)
+                << "\nProgram Counter Register: " << std::setw(4) << m_programCounter       << " " << std::bitset<8>(m_programCounter)
+                << "\n\n";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
