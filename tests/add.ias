@@ -1,0 +1,6 @@
+INP
+STA 30
+INP
+ADD 30
+OUT
+END

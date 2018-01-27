@@ -10,7 +10,7 @@
 
 namespace
 {
-    const std::unordered_map<std::string, uint8_t> strToOpcode
+    const std::unordered_map<std::string, Word> strToOpcode
     {
         {"add", 0},
         {"sub", 1},
@@ -77,9 +77,9 @@ void IASAssembler::parseLine(const std::string& line)
     toLowerCase(tokens.at(0));
     auto opcode = strToOpcode.at(tokens.at(0));
 
-    uint8_t instruction = opcode << MEMORY_BITS;
+    Word instruction = opcode << MEMORY_BITS;
     if (tokens.size() == 2) {
-        uint8_t address = (uint8_t)std::stoi(tokens[1]);
+        Word address = (Word)std::stoi(tokens[1]);
         instruction |= address;
     }
     m_assembledCode[m_instructionCount++] = instruction;

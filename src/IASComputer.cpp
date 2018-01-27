@@ -38,7 +38,7 @@ void IASComputer::run()
 void IASComputer::fetch()
 {
     #ifdef PRINT_STATE
-    std::cout << "\n ========= A new cycle begins =========\";
+    std::cout << "\n ========= A new cycle begins =========\n";
     #endif // PRINT_STATE
 
     m_memAddressRegister    = m_programCounter++;
@@ -53,7 +53,7 @@ void IASComputer::fetch()
 //Executes next instruction
 void IASComputer::execute()
 {
-    uint8_t opcode = getOpcodeFromInstr();
+    Word opcode = getOpcodeFromInstr();
     try {
         m_commandMap.at(opcode)();
     }
@@ -112,21 +112,21 @@ void IASComputer::printOpcodeAndAddress()
 }
 
 //Extracts the memory address from the instruction register
-uint8_t IASComputer::getMemAddrFromInstr() const
+Word IASComputer::getMemAddrFromInstr() const
 {
-    uint8_t address = m_instructionRegister << OPCODE_BITS;
+    Word address = m_instructionRegister << OPCODE_BITS;
     return address >> OPCODE_BITS;
 }
 
 //Extracts the opcode address from the instruction register
-uint8_t IASComputer::getOpcodeFromInstr() const
+Word IASComputer::getOpcodeFromInstr() const
 {
     return m_instructionRegister >> MEMORY_BITS;
 }
 
 //Extracts the memory address from the instruction register
 //and gets the value stored there
-uint8_t IASComputer::getValueStoredAtInstrAddress() const
+Word IASComputer::getValueStoredAtInstrAddress() const
 {
     return m_memory.at(getMemAddrFromInstr());
 }
