@@ -3,8 +3,8 @@
 #include <iostream>
 #include <bitset>
 
-constexpr uint8_t OPCODE_BITS = 3;
-constexpr uint8_t MEMORY_BITS  = 5;
+constexpr uint8_t OPCODE_BITS   = 3;
+constexpr uint8_t MEMORY_BITS   = 5;
 
 IASComputer::IASComputer(const Memory& memory)
 :   m_memory        (memory)
@@ -47,7 +47,7 @@ void IASComputer::execute()
         m_commandMap.at(opcode)();
     }
     catch (std::out_of_range& e) {
-        std::cout << (int)opcode << " unknown\n";
+        std::cout << "Opcode: " << (int)opcode << " unknown\n";
     }
 }
 
@@ -83,7 +83,7 @@ void IASComputer::input()
 //TODO use I/O registers?
 void IASComputer::output()
 {
-    std::cout << "Output: " << (int)m_accumulator;
+    std::cout << "Output: " << (int)m_accumulator << "\n";
 }
 
 void IASComputer::jumpIfPos()

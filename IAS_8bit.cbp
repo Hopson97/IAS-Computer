@@ -32,9 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src/IASAssembler.cpp" />
+		<Unit filename="src/IASAssembler.h" />
 		<Unit filename="src/IASComputer.cpp" />
 		<Unit filename="src/IASComputer.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="tests/test1.ias" />
 		<Extensions>
 			<code_completion />
 			<envvars />
