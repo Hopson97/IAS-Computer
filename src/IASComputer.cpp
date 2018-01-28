@@ -62,11 +62,11 @@ void IASComputer::execute()
         m_commandMap.at(opcode)();
     }
     catch (std::out_of_range& e) {
-        std::cout << "Opcode: " << (int)opcode << " unknown\n";
+        std::cout << TextColour::Red << "Opcode: " << (int)opcode << " unknown\n" << TextColour::DarkGrey;
     }
 }
 
-//Commands
+//Bunch of functions for the op-codes
 void IASComputer::add()
 {
     m_accumulator += getValueStoredAtInstrAddress();

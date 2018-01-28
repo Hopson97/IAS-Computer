@@ -4,9 +4,9 @@
 #include <functional>
 #include <unordered_map>
 
-using Word  = uint8_t;
-using Memory  = std::array<Word, 64>;
-using RegType = int16_t;
+using Word      = uint8_t;
+using Memory    = std::array<Word, 64>;
+using RegType   = int16_t;
 
 constexpr Word OPCODE_BITS   = 3;
 constexpr Word MEMORY_BITS   = 5;
