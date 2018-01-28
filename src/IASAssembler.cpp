@@ -6,7 +6,8 @@
 #include <iterator>
 #include <vector>
 #include <algorithm>
-#include <bitset>
+
+#include "Colour.h"
 
 namespace
 {
@@ -54,7 +55,7 @@ Memory IASAssembler::assembleFile(const char* fileName)
     if (inFile.good()) {
         parse(inFile);
     } else {
-        std::cout << "File " << fileName << " does not exist.";
+        std::cout << TextColour::Red << "File " << fileName << " does not exist.\n" << TextColour::White;
     }
     m_assembledCode[m_instructionCount] = END_OF_FILE << MEMORY_BITS;
     return m_assembledCode;

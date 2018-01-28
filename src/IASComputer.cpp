@@ -4,6 +4,10 @@
 #include <iomanip>
 #include <bitset>
 
+#include "Colour.h"
+
+//#define PRINT_STATE
+
 IASComputer::IASComputer(const Memory& memory)
 :   m_memory        (memory)
 ,   m_commandMap {
@@ -38,7 +42,7 @@ void IASComputer::run()
 void IASComputer::fetch()
 {
     #ifdef PRINT_STATE
-    std::cout << "\n ========= A new cycle begins =========\n";
+    std::cout << TextColour::Green << "\n ========= A new cycle begins =========\n" << TextColour::DarkGrey;
     #endif // PRINT_STATE
 
     m_memAddressRegister    = m_programCounter++;
@@ -87,14 +91,15 @@ void IASComputer::load()
 //TODO use I/O registers?
 void IASComputer::input()
 {
-    std::cout << "Please input a value: ";
-    std::cin >> m_accumulator;
+    std::cout << TextColour::Cyan << "Please input a value: " << TextColour::DarkGrey;
+    std::cin  >> m_accumulator;
 }
 
 //TODO use I/O registers?
 void IASComputer::output()
 {
-    std::cout << "Output: " << (int)m_accumulator << "\n";
+    std::cout   << TextColour::Cyan << "Output: "
+                << TextColour::DarkGrey << (int)m_accumulator << "\n";
 }
 
 void IASComputer::jumpIfPos()
@@ -140,7 +145,7 @@ void IASComputer::printFullState()
                 << "\nMemory Address Register:  " << std::setw(4) << m_memAddressRegister   << " " << std::bitset<8>(m_memAddressRegister)
                 << "\nInstruction Register:     " << std::setw(4) << m_instructionRegister  << " " << std::bitset<8>(m_instructionRegister)
                 << "\nProgram Counter Register: " << std::setw(4) << m_programCounter       << " " << std::bitset<8>(m_programCounter)
-                << "\n\n";
+                << "\n";
     #endif // PRINT_STATE
 }
 
