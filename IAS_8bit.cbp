@@ -40,6 +40,7 @@
 		<Unit filename="src/IASComputer.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="tests/add.ias" />
+		<Unit filename="tests/multiply.ias" />
 		<Unit filename="tests/test1.ias" />
 		<Extensions>
 			<code_completion />

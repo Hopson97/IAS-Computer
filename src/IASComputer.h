@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 using Word      = uint8_t;
-using Memory    = std::array<Word, 64>;
+using Memory    = std::array<Word, 32>;
 using RegType   = int16_t;
 
 constexpr Word OPCODE_BITS   = 3;

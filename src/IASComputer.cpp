@@ -20,7 +20,9 @@ IASComputer::IASComputer(const Memory& memory)
         {5, std::bind(IASComputer::output,      this)},
         {6, std::bind(IASComputer::jumpIfPos,   this)},
     }
-{ }
+{
+    m_memory[31] = 1;
+}
 
 //Handles the fetch and execute cycle
 void IASComputer::run()
@@ -51,6 +53,7 @@ void IASComputer::fetch()
     printFullState();
     m_instructionRegister   = m_memBufferRegister;
     printFullState();
+    printOpcodeAndAddress();
 }
 
 
@@ -111,8 +114,11 @@ void IASComputer::jumpIfPos()
 
 void IASComputer::printOpcodeAndAddress()
 {
-    std::cout   << std::bitset<8>(getOpcodeFromInstr()) << " "
-                << std::bitset<8>(getMemAddrFromInstr())
+    int op = (int)getOpcodeFromInstr();
+    int ad = (int)getMemAddrFromInstr();
+
+    std::cout   << "Opcode:  " << std::setw(4) << op << " " << std::bitset<8>(op) << "\n"
+                << "Address: " << std::setw(4) << ad << " " << std::bitset<8>(ad)
                 << "\n";
 }
 
