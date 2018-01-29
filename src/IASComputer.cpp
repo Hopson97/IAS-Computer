@@ -22,10 +22,6 @@ IASComputer::IASComputer(const Memory& memory)
     }
 {
     m_memory[31] = 1;
-
-    for (int i = 0; i < (int)m_memory.size(); i++) {
-        std::cout << i + 1 << " " << std::bitset<8>((int)m_memory[i]) << std::endl;
-    }
 }
 
 //Handles the fetch and execute cycle
@@ -48,18 +44,12 @@ void IASComputer::run()
 //Fetches the next instruction from memory
 void IASComputer::fetch()
 {
-    #ifdef PRINT_STATE
-    std::cout << TextColour::Green << "\n ========= A new cycle begins =========\n" << TextColour::DarkGrey;
-    #endif // PRINT_STATE
-
     m_memAddressRegister    = m_programCounter++;
     printFullState();
     m_memBufferRegister     = m_memory[m_memAddressRegister];
     printFullState();
     m_instructionRegister   = m_memBufferRegister;
     printFullState();
-    //printOpcodeAndAddress();
-    std::cout << "\n";
 }
 
 
@@ -74,7 +64,6 @@ void IASComputer::execute()
         std::cout << TextColour::DarkRed << "Opcode: " << (int)opcode << " unknown\n" << TextColour::DarkGrey;
     }
     std::cout << "Program counter: " << (int)m_programCounter << "\n";
-    printOpcodeAndAddress();
 }
 
 //Bunch of functions for the op-codes
@@ -90,9 +79,7 @@ void IASComputer::subtract()
 
 void IASComputer::store()
 {
-    std::cout << "Storing Value\n";
     auto address = getMemAddrFromInstr();
-    std::cout << "Store: " << TextColour::Green << (int)address << TextColour::DarkGrey << "\n";
     m_memory.at(address) = m_accumulator;
 }
 
@@ -119,10 +106,8 @@ void IASComputer::output()
 void IASComputer::jumpIfPos()
 {
     if (m_accumulator > 0) {
-        std::cout << TextColour::Red << "Address before " << (int)m_programCounter << "\n";
         auto address = getMemAddrFromInstr();
         m_programCounter = (RegType)address;
-        std::cout << "Address After " <<  (int)m_programCounter << TextColour::DarkGrey << "\n";
     }
 }
 

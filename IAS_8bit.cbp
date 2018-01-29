@@ -29,6 +29,8 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Winit-self" />
+			<Add option="-pedantic" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
