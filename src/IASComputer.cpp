@@ -22,12 +22,17 @@ IASComputer::IASComputer(const Memory& memory)
     }
 {
     m_memory[31] = 1;
+
+    for (int i = 0; i < (int)m_memory.size(); i++) {
+        std::cout << i + 1 << " " << std::bitset<8>((int)m_memory[i]) << std::endl;
+    }
 }
 
 //Handles the fetch and execute cycle
 void IASComputer::run()
 {
     while (true) {
+        std::cout << TextColour::Green << "\n ========= A new cycle begins =========\n" << TextColour::DarkGrey;
         if ((int)m_programCounter == (int)m_memory.size()) {
             break;
         }
@@ -53,7 +58,8 @@ void IASComputer::fetch()
     printFullState();
     m_instructionRegister   = m_memBufferRegister;
     printFullState();
-    printOpcodeAndAddress();
+    //printOpcodeAndAddress();
+    std::cout << "\n";
 }
 
 
@@ -65,8 +71,10 @@ void IASComputer::execute()
         m_commandMap.at(opcode)();
     }
     catch (std::out_of_range& e) {
-        std::cout << TextColour::Red << "Opcode: " << (int)opcode << " unknown\n" << TextColour::DarkGrey;
+        std::cout << TextColour::DarkRed << "Opcode: " << (int)opcode << " unknown\n" << TextColour::DarkGrey;
     }
+    std::cout << "Program counter: " << (int)m_programCounter << "\n";
+    printOpcodeAndAddress();
 }
 
 //Bunch of functions for the op-codes
@@ -82,12 +90,15 @@ void IASComputer::subtract()
 
 void IASComputer::store()
 {
+    std::cout << "Storing Value\n";
     auto address = getMemAddrFromInstr();
+    std::cout << "Store: " << TextColour::Green << (int)address << TextColour::DarkGrey << "\n";
     m_memory.at(address) = m_accumulator;
 }
 
 void IASComputer::load()
 {
+    //std::cout << TextColour::Red <<"LOAD before " << (int)getValueStoredAtInstrAddress() << "\n";
     m_accumulator = getValueStoredAtInstrAddress();
 }
 
@@ -108,7 +119,10 @@ void IASComputer::output()
 void IASComputer::jumpIfPos()
 {
     if (m_accumulator > 0) {
-        m_programCounter = getValueStoredAtInstrAddress();
+        std::cout << TextColour::Red << "Address before " << (int)m_programCounter << "\n";
+        auto address = getMemAddrFromInstr();
+        m_programCounter = (RegType)address;
+        std::cout << "Address After " <<  (int)m_programCounter << TextColour::DarkGrey << "\n";
     }
 }
 
@@ -125,8 +139,10 @@ void IASComputer::printOpcodeAndAddress()
 //Extracts the memory address from the instruction register
 Word IASComputer::getMemAddrFromInstr() const
 {
-    Word address = m_instructionRegister << OPCODE_BITS;
-    return address >> OPCODE_BITS;
+    Word address = (Word)m_instructionRegister & 0x1F;
+    std::cout   << "Address shift 1 and 2\n"
+                << std::bitset<8>(m_instructionRegister) << " " << std::bitset<8>(address) << " " << (int)address << "\n";
+    return address;
 }
 
 //Extracts the opcode address from the instruction register
