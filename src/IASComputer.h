@@ -35,9 +35,9 @@ class IASComputer
         Word getOpcodeFromInstr() const;
         Word getValueStoredAtInstrAddress() const;
 
-        void printOpcodeAndAddress();
-
-        void printFullState();
+        void printMidCycleState     ();
+        void printOpcodeAndAddress  ();
+        void printFullState         ();
 
         Memory m_memory;
         std::unordered_map<Word, std::function<void(void)>> m_commandMap;
