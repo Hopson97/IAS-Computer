@@ -42,18 +42,22 @@ IASComputer::IASComputer(const Memory& memory)
 void IASComputer::run()
 {
     while (true) {
-        std::cout << TextColour::Green << "\n\n ========= A new cycle begins =========\n" << TextColour::DarkGrey;
-        if ((int)m_programCounter == (int)m_memory.size()) {
-            break;
-        }
+        std::cout << TextColour::Green << "\n\n\n ========= A new cycle begins =========\n" << DefaultCol;
         std::cout << "Program counter: " << (int)m_programCounter << "\n";
-        fetch();
-        printMidCycleState();
-        //Test for end of instructions
-        if (getOpcodeFromInstr() == END_OF_FILE) {
+
+        if (m_programCounter == (int)m_memory.size()) {
             break;
         }
-        execute();
+
+        fetch();    //FETCH
+
+        printMidCycleState();
+
+        if (getOpcodeFromInstr() == INSTRUCTION_END) {
+            break;
+        }
+
+        execute();  //EXECUTE... order 66
     }
 }
 
@@ -77,7 +81,7 @@ void IASComputer::execute()
         m_commandMap.at(opcode)();
     }
     catch (std::out_of_range& e) {
-        std::cout << TextColour::DarkRed << "Opcode: " << (int)opcode << " unknown\n" << TextColour::DarkGrey;
+        std::cout << TextColour::DarkRed << "Opcode: " << (int)opcode << " unknown\n" << DefaultCol;
     }
 }
 
@@ -100,14 +104,13 @@ void IASComputer::store()
 
 void IASComputer::load()
 {
-    //std::cout << TextColour::Red <<"LOAD before " << (int)getValueStoredAtInstrAddress() << "\n";
     m_accumulator = getValueStoredAtInstrAddress();
 }
 
 //TODO use I/O registers?
 void IASComputer::input()
 {
-    std::cout << TextColour::Cyan << "Please input a value: " << TextColour::DarkGrey;
+    std::cout << TextColour::Cyan << "Please input a value: " << DefaultCol;
     std::cin  >> m_accumulator;
 }
 
@@ -145,11 +148,15 @@ Word IASComputer::getValueStoredAtInstrAddress() const
     return m_memory.at(getMemAddrFromInstr());
 }
 
+/*
+    Bunch of functions which print some states and that
+*/
 void IASComputer::printMidCycleState()
 {
-    std::cout << TextColour::DarkGreen << "Instruction Fetched: \n" << TextColour::DarkGrey;
+    std::cout << TextColour::DarkGreen << "Instruction Fetched. \n" << DefaultCol;
     printOpcodeAndAddress();
-    std::cout << opcodeString.at(getOpcodeFromInstr()) << "\n";
+    std::cout   << TextColour::Magenta  << "Description: "
+                << DefaultCol           << opcodeString.at(getOpcodeFromInstr()) << "\n";
 }
 
 
@@ -158,8 +165,10 @@ void IASComputer::printOpcodeAndAddress()
     int op = (int)getOpcodeFromInstr();
     int ad = (int)getMemAddrFromInstr();
 
-    std::cout   << "Opcode:  " << std::setw(4) << op << " " << std::bitset<8>(op) << "\n"
-                << "Address: " << std::setw(4) << ad << " " << std::bitset<8>(ad)
+    std::cout   << TextColour::Magenta  << "Opcode:  "
+                << DefaultCol           << std::setw(4) << op << " " << std::bitset<8>(op) << "\n"
+                << TextColour::Magenta  << "Address: "
+                << DefaultCol           << std::setw(4) << ad << " " << std::bitset<8>(ad)
                 << "\n";
 }
 

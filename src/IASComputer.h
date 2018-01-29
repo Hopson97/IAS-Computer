@@ -8,9 +8,9 @@ using Word      = uint8_t;
 using Memory    = std::array<Word, 32>;
 using RegType   = int16_t;
 
-constexpr Word OPCODE_BITS   = 3;
-constexpr Word MEMORY_BITS   = 5;
-constexpr Word END_OF_FILE   = 7;
+constexpr Word OPCODE_BITS      = 3;
+constexpr Word MEMORY_BITS      = 5;
+constexpr Word INSTRUCTION_END  = 7;
 
 class IASComputer
 {

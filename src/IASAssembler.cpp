@@ -57,7 +57,7 @@ Memory IASAssembler::assembleFile(const char* fileName)
     } else {
         std::cout << TextColour::Red << "File " << fileName << " does not exist.\n" << TextColour::White;
     }
-    m_assembledCode[m_instructionCount] = END_OF_FILE << MEMORY_BITS;
+    m_assembledCode[m_instructionCount] = INSTRUCTION_END << MEMORY_BITS;
     return m_assembledCode;
 }
 

@@ -25,6 +25,8 @@ enum class TextColour
     White             = FOREGROUND_INTENSITY    | FOREGROUND_RED    | FOREGROUND_GREEN | FOREGROUND_BLUE,
 };
 
+const TextColour DefaultCol = TextColour::DarkGrey;
+
 void setTextColour(TextColour colour);
 
 std::ostream& operator << (std::ostream& stream, TextColour colour);
