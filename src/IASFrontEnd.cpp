@@ -9,6 +9,7 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
 
 void IASFrontEnd::run()
 {
+    /*
     while (m_window.isOpen()) {
 
         m_window.clear();
@@ -16,6 +17,8 @@ void IASFrontEnd::run()
         m_window.display();
         tryCloseWindow();
     }
+    */
+    m_window.close();
     m_iasComputer.run();
 }
 

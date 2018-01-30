@@ -42,7 +42,7 @@ IASComputer::IASComputer(const Memory& memory)
 void IASComputer::run()
 {
     while (true) {
-        std::cout << TextColour::Green << "\n\n\n ========= A new cycle begins =========\n" << DefaultCol;
+        std::cout << TextColour::Green << "\n\n\n ========= Start of Next Cycle =========\n" << DefaultCol;
         std::cout << "Program counter: " << (int)m_programCounter << "\n";
 
         if (m_programCounter == (int)m_memory.size()) {
@@ -85,8 +85,10 @@ void IASComputer::execute()
     }
 }
 
-//Bunch of functions for the op-codes
-void IASComputer::add()
+/*
+    Bunch of instructions. These are the opcodes.
+*/
+void IASComputer::add() //0
 {
     m_accumulator += getValueStoredAtInstrAddress();
 }
@@ -129,6 +131,10 @@ void IASComputer::jumpIfPos()
     }
 }
 
+/*
+    END OF INSTRUCTION FUNCTIONS
+*/
+
 //Extracts the memory address from the instruction register
 Word IASComputer::getMemAddrFromInstr() const
 {
@@ -151,7 +157,7 @@ Word IASComputer::getValueStoredAtInstrAddress() const
 /*
     Bunch of functions which print some states and that
 */
-void IASComputer::printMidCycleState()
+void IASComputer::printMidCycleState() const
 {
     std::cout << TextColour::DarkGreen << "Instruction Fetched. \n" << DefaultCol;
     printOpcodeAndAddress();
@@ -160,7 +166,7 @@ void IASComputer::printMidCycleState()
 }
 
 
-void IASComputer::printOpcodeAndAddress()
+void IASComputer::printOpcodeAndAddress() const
 {
     int op = (int)getOpcodeFromInstr();
     int ad = (int)getMemAddrFromInstr();
@@ -172,7 +178,7 @@ void IASComputer::printOpcodeAndAddress()
                 << "\n";
 }
 
-void IASComputer::printFullState()
+void IASComputer::printFullState() const
 {
     #ifdef PRINT_STATE
     std::cout   << "\n"

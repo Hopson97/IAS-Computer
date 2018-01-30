@@ -32,16 +32,16 @@ class IASComputer
         void output     ();
         void jumpIfPos  ();
 
-        Word getMemAddrFromInstr() const;
-        Word getOpcodeFromInstr() const;
-        Word getValueStoredAtInstrAddress() const;
+        Word getMemAddrFromInstr            () const;
+        Word getOpcodeFromInstr             () const;
+        Word getValueStoredAtInstrAddress   () const;
 
-        void printMidCycleState     ();
-        void printOpcodeAndAddress  ();
-        void printFullState         ();
+        void printMidCycleState     () const;
+        void printOpcodeAndAddress  () const;
+        void printFullState         () const;
 
         Memory m_memory;
-        std::unordered_map<Word, std::function<void(void)>> m_commandMap;
+        const std::unordered_map<Word, std::function<void(void)>> m_commandMap;
 
 
         //registers
