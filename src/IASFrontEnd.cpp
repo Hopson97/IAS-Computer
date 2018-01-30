@@ -26,6 +26,16 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
 
     initRegisterDisplay();
     initInstructionDisplay();
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 4; x++) {
+            m_memoryCells.emplace_back(x * 8 + y,
+                                       x * MemoryCell::XSIZE + 510 + x * 10,
+                                       y * MemoryCell::YSIZE + 190,
+                                       m_mainFont);
+        }
+    }
+    updateMemoryDisplay();
 }
 
 //Runs the computer, either using CLI or GUI
@@ -37,7 +47,7 @@ void IASFrontEnd::run(bool useGui)
             m_window.clear();
 
             //Cycle every n seconds, updates display in process
-            if (c.getElapsedTime() > sf::seconds(0.75)) {
+            if (c.getElapsedTime() > sf::seconds(2)) {
                 cycleComputer();
                 c.restart();
             }
@@ -55,7 +65,17 @@ void IASFrontEnd::run(bool useGui)
     m_window.close();
 }
 
+//Does 1 fetch-execute cycle
+void IASFrontEnd::cycleComputer()
+{
+    m_iasComputer.fetch();
 
+    updateRegisterDisplay();
+    updateInstructionDisplay();
+    updateMemoryDisplay();
+
+    m_iasComputer.execute();
+}
 
 //Check if user has closed window
 void IASFrontEnd::tryCloseWindow()
@@ -91,18 +111,16 @@ void IASFrontEnd::updateInstructionDisplay()
 
     instrDisp.setString(getDecAndBinString(opcode));
     addrDisp.setString(getDecAndBinString(address));
-
-
 }
 
-
-//Does 1 fetch-execute cycle
-void IASFrontEnd::cycleComputer()
+void IASFrontEnd::updateMemoryDisplay()
 {
-    m_iasComputer.fetch();
-    updateRegisterDisplay();
-    updateInstructionDisplay();
-    m_iasComputer.execute();
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 4; x++) {
+            int location = x * 8 + y;
+            m_memoryCells[location].update(m_iasComputer.getMemory()[location]);
+        }
+    }
 }
 
 //Renders the displays
@@ -119,6 +137,10 @@ void IASFrontEnd::render()
     for (int i = 0; i < 3; i++) {
         m_window.draw(m_instructionDisplays[i].first);
         m_window.draw(m_instructionDisplays[i].second);
+    }
+
+    for (auto& memoryCell : m_memoryCells) {
+        memoryCell.draw(m_window);
     }
 }
 
@@ -210,5 +232,40 @@ void IASFrontEnd::Section::draw(sf::RenderWindow& window)
     window.draw(m_titleText);
 
 }
+
+
+IASFrontEnd::MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
+{
+    m_bg.setSize ({MemoryCell::XSIZE, MemoryCell::YSIZE});
+    m_bg.move    (x, y);
+
+    m_bg.setOutlineThickness(2);
+    m_bg.setOutlineColor({150, 150, 150});
+    m_bg.setFillColor({100, 100, 100});
+
+    m_memLocationDisplay.setCharacterSize(12);
+    m_memoryValueDiplay .setCharacterSize(12);
+
+    m_memLocationDisplay.setFont(font);
+    m_memoryValueDiplay.setFont(font);
+
+    m_memLocationDisplay.setString(std::to_string(memoryLocation));
+
+    m_memLocationDisplay.move(x, y);
+    m_memoryValueDiplay.move(x + 10, y);
+}
+
+void IASFrontEnd::MemoryCell::update(Word newValue)
+{
+    m_memoryValueDiplay.setString(getDecAndBinString(newValue));
+}
+
+void IASFrontEnd::MemoryCell::draw(sf::RenderWindow& window)
+{
+    window.draw(m_bg);
+    window.draw(m_memLocationDisplay);
+    window.draw(m_memoryValueDiplay);
+}
+
 
 

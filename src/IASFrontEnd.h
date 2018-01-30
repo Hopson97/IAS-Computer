@@ -31,10 +31,14 @@ class IASFrontEnd
     class MemoryCell
     {
         public:
-            MemoryCell(int memoryLocation, int x, int y);
+            MemoryCell(int memoryLocation, int x, int y, const sf::Font& font);
 
-            void update(newValue);
-            void draw(sf::RenderWindow& window);
+            void update (Word newValue);
+            void draw   (sf::RenderWindow& window);
+
+            constexpr static int XSIZE = 150;
+            constexpr static int YSIZE = 40;
+
 
         private:
             sf::RectangleShape m_bg;
@@ -49,8 +53,10 @@ class IASFrontEnd
 
     private:
         void tryCloseWindow();
+
         void updateRegisterDisplay      ();
         void updateInstructionDisplay   ();
+        void updateMemoryDisplay        ();
 
         void cycleComputer ();
         void render ();
@@ -70,6 +76,8 @@ class IASFrontEnd
         std::vector<sf::Text> m_registerValueDisplay;
 
         std::vector<std::pair<sf::Text, sf::Text>> m_instructionDisplays;
+
+        std::vector<MemoryCell> m_memoryCells;
 
 };
 
