@@ -12,11 +12,14 @@ class IASFrontEnd
     constexpr static int REG_GUI_X = 20;
     constexpr static int REG_GUI_Y = 160;
 
-    constexpr static int INS_GUI_X = 20;
+    constexpr static int INS_GUI_X = REG_GUI_X;
     constexpr static int INS_GUI_Y = 20;
 
     constexpr static int MEM_GUI_X = 510;
     constexpr static int MEM_GUI_Y = 185;
+
+    constexpr static int IO_GUI_X  = REG_GUI_X;
+    constexpr static int IO_GUI_Y  = 400;
 
     constexpr static int TEXT_HEIGHT = 30;
 
@@ -32,6 +35,8 @@ class IASFrontEnd
             sf::Text m_titleText;
     };
 
+    //Class to represent the display of a title, and a value
+    //For example, "Opcode: 4 00000100"
     class NormalCell
     {
         public:
@@ -50,6 +55,7 @@ class IASFrontEnd
             int m_currentValue;
     };
 
+    //Class to represent the display of a memory address cell
     class MemoryCell
     {
         public:
@@ -60,7 +66,6 @@ class IASFrontEnd
 
             constexpr static int XSIZE = 150;
             constexpr static int YSIZE = 40;
-
 
         private:
             sf::RectangleShape m_bg;
@@ -99,6 +104,7 @@ class IASFrontEnd
         Section m_registerSect;
         Section m_instructionSect;
         Section m_memorySect;
+        Section m_sectionIO;
 
         std::vector<NormalCell> m_registerDisplay;
         std::vector<NormalCell> m_instructionDisplay;

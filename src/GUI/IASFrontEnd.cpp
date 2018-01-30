@@ -36,6 +36,8 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
         }
     }
     updateMemoryDisplay();
+
+    m_sectionIO.init("User Input and Output", {IO_GUI_X, IO_GUI_Y}, {460, 300}, m_mainFont);
 }
 
 //Runs the computer, either using CLI or GUI
@@ -149,6 +151,7 @@ void IASFrontEnd::render()
     m_memorySect        .draw(m_window);
     m_registerSect      .draw(m_window);
     m_instructionSect   .draw(m_window);
+    m_sectionIO         .draw(m_window);
 
     for (auto& regDisplay : m_registerDisplay) {
         regDisplay.draw(m_window);
@@ -167,8 +170,8 @@ void IASFrontEnd::initRegisterDisplay()
 {
     m_registerDisplay.emplace_back(m_mainFont, "   Accumulator Register: ", 260);
     m_registerDisplay.emplace_back(m_mainFont, " Memory Buffer Register: ", 260);
-    m_registerDisplay.emplace_back(m_mainFont, "Memory Address Register: ", 260);
     m_registerDisplay.emplace_back(m_mainFont, "   Instruction Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "Memory Address Register: ", 260);
     m_registerDisplay.emplace_back(m_mainFont, "        Program Counter: ", 260);
     m_registerDisplay.emplace_back(m_mainFont, "    IO Address Register: ", 260);
     m_registerDisplay.emplace_back(m_mainFont, "     IO Buffer Register: ", 260);

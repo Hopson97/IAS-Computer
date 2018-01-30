@@ -32,8 +32,8 @@ class IASComputer
     struct Registers {
         RegType accumulator         = 0;
         RegType memoryBuffer        = 0;
-        RegType memoryAddress       = 0;
         RegType instruction         = 0;
+        RegType memoryAddress       = 0;
         RegType programCounter      = 0;
         RegType IOAddressRegister   = 0;
         RegType IOBufferRegister    = 0;
