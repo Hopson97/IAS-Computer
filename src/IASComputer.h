@@ -19,6 +19,14 @@ class IASComputer
         IASComputer(const Memory& memory);
         void run();
 
+        const Memory& getMemory     () const { return m_memory; }
+
+        RegType getAccummulator     () const { return m_accumulator; }
+        RegType getMemBufferReg     () const { return m_memBufferRegister; }
+        RegType getMemAddressReg    () const { return m_memAddressRegister; }
+        RegType getInstructionReg   () const { return m_instructionRegister; }
+        RegType getProgramCounter   () const { return m_programCounter; }
+
     private:
         void fetch();
         void execute();
@@ -43,15 +51,14 @@ class IASComputer
         Memory m_memory;
         const std::unordered_map<Word, std::function<void(void)>> m_commandMap;
 
-
         //registers
-        RegType m_accumulator = 0;
-        RegType m_memBufferRegister = 0;
-        RegType m_memAddressRegister = 0;
-        RegType m_instructionRegister = 0;
-        RegType m_programCounter = 0;
-        RegType IOAddressRegister = 0;
-        RegType IOBufferRegister = 0;
+        RegType m_accumulator           = 0;
+        RegType m_memBufferRegister     = 0;
+        RegType m_memAddressRegister    = 0;
+        RegType m_instructionRegister   = 0;
+        RegType m_programCounter        = 0;
+        RegType IOAddressRegister       = 0;
+        RegType IOBufferRegister        = 0;
 };
 
 #endif // IASCOMPUTER_H

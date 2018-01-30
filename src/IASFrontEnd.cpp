@@ -4,7 +4,7 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
 :   m_window        ({1280, 720}, "8-bit IAS Computer")
 ,   m_iasComputer   (memory)
 {
-
+    m_mainFont.loadFromFile("res/rs.ttf");
 }
 
 void IASFrontEnd::run()
