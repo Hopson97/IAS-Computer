@@ -43,9 +43,9 @@ void IASComputer::run()
 {
     while (true) {
         std::cout << TextColour::Green << "\n\n\n ========= Start of Next Cycle =========\n" << DefaultCol;
-        std::cout << "Program counter: " << (int)m_programCounter << "\n";
+        std::cout << "Program counter: " << (int)m_registers.programCounter << "\n";
 
-        if (m_programCounter == (int)m_memory.size()) {
+        if (m_registers.programCounter == (int)m_memory.size()) {
             break;
         }
 
@@ -64,12 +64,18 @@ void IASComputer::run()
 //Fetches the next instruction from memory
 void IASComputer::fetch()
 {
+    m_registers.memoryAddress = m_registers.programCounter++;
+    m_registers.memoryBuffer  = m_memory[m_registers.memoryAddress];
+    m_registers.instruction   = m_registers.memoryBuffer;
+
+    /*
     m_memAddressRegister    = m_programCounter++;
     printFullState();
     m_memBufferRegister     = m_memory[m_memAddressRegister];
     printFullState();
     m_instructionRegister   = m_memBufferRegister;
     printFullState();
+    */
 }
 
 
@@ -90,44 +96,44 @@ void IASComputer::execute()
 */
 void IASComputer::add() //0
 {
-    m_accumulator += getValueStoredAtInstrAddress();
+    m_registers.accumulator += getValueStoredAtInstrAddress();
 }
 
 void IASComputer::subtract()
 {
-    m_accumulator -= getValueStoredAtInstrAddress();
+    m_registers.accumulator -= getValueStoredAtInstrAddress();
 }
 
 void IASComputer::store()
 {
     auto address = getMemAddrFromInstr();
-    m_memory.at(address) = m_accumulator;
+    m_memory.at(address) = m_registers.accumulator;
 }
 
 void IASComputer::load()
 {
-    m_accumulator = getValueStoredAtInstrAddress();
+    m_registers.accumulator = getValueStoredAtInstrAddress();
 }
 
 //TODO use I/O registers?
 void IASComputer::input()
 {
     std::cout << TextColour::Cyan << "Please input a value: " << DefaultCol;
-    std::cin  >> m_accumulator;
+    std::cin  >> m_registers.accumulator;
 }
 
 //TODO use I/O registers?
 void IASComputer::output()
 {
     std::cout   << TextColour::Cyan << "Output: "
-                << TextColour::DarkGrey << (int)m_accumulator << "\n";
+                << TextColour::DarkGrey << (int)m_registers.accumulator << "\n";
 }
 
 void IASComputer::jumpIfPos()
 {
-    if (m_accumulator > 0) {
+    if (m_registers.accumulator > 0) {
         auto address = getMemAddrFromInstr();
-        m_programCounter = (RegType)address;
+        m_registers.programCounter = (RegType)address;
     }
 }
 
@@ -138,13 +144,13 @@ void IASComputer::jumpIfPos()
 //Extracts the memory address from the instruction register
 Word IASComputer::getMemAddrFromInstr() const
 {
-    return (Word)m_instructionRegister & 0x1F;
+    return (Word)m_registers.instruction & 0x1F;
 }
 
 //Extracts the opcode address from the instruction register
 Word IASComputer::getOpcodeFromInstr() const
 {
-    return m_instructionRegister >> MEMORY_BITS;
+    return m_registers.instruction >> MEMORY_BITS;
 }
 
 //Extracts the memory address from the instruction register

@@ -2,6 +2,12 @@
 #include "IASFrontEnd.h"
 #include "IASAssembler.h"
 
+struct Test
+{
+    int x = 10;
+    int y = 5;
+};
+
 int main(int argc, char** argv)
 {
     std::string fileName = "tests/multiply.ias";

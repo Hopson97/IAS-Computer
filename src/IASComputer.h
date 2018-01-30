@@ -12,20 +12,28 @@ using RegType   = int16_t;
 constexpr Word OPCODE_BITS      = 3;
 constexpr Word MEMORY_BITS      = 5;
 constexpr Word INSTRUCTION_END  = 7;
+constexpr int  NUM_REGISTERS    = 7;
 
 class IASComputer
 {
+    //registers
+    struct Registers {
+        RegType accumulator         = 0;
+        RegType memoryBuffer        = 0;
+        RegType memoryAddress       = 0;
+        RegType instruction         = 0;
+        RegType programCounter      = 0;
+        RegType IOAddressRegister   = 0;
+        RegType IOBufferRegister    = 0;
+    };
+
     public:
         IASComputer(const Memory& memory);
         void run();
 
-        const Memory& getMemory     () const { return m_memory; }
+        const Memory& getMemory () const { return m_memory; }
 
-        RegType getAccummulator     () const { return m_accumulator; }
-        RegType getMemBufferReg     () const { return m_memBufferRegister; }
-        RegType getMemAddressReg    () const { return m_memAddressRegister; }
-        RegType getInstructionReg   () const { return m_instructionRegister; }
-        RegType getProgramCounter   () const { return m_programCounter; }
+        Registers getRegisters  () const { return m_registers;}
 
     private:
         void fetch();
@@ -48,17 +56,10 @@ class IASComputer
         void printOpcodeAndAddress  () const;
         void printFullState         () const;
 
-        Memory m_memory;
-        const std::unordered_map<Word, std::function<void(void)>> m_commandMap;
+        Memory      m_memory;
+        Registers   m_registers;
 
-        //registers
-        RegType m_accumulator           = 0;
-        RegType m_memBufferRegister     = 0;
-        RegType m_memAddressRegister    = 0;
-        RegType m_instructionRegister   = 0;
-        RegType m_programCounter        = 0;
-        RegType IOAddressRegister       = 0;
-        RegType IOBufferRegister        = 0;
+        const std::unordered_map<Word, std::function<void(void)>> m_commandMap;
 };
 
 #endif // IASCOMPUTER_H
