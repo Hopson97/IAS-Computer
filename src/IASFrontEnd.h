@@ -14,6 +14,9 @@ class IASFrontEnd
     constexpr static int INS_GUI_X = 20;
     constexpr static int INS_GUI_Y = 20;
 
+    constexpr static int MEM_GUI_X = 510;
+    constexpr static int MEM_GUI_Y = 190;
+
     constexpr static int TEXT_HEIGHT = 30;
 
     class Section
@@ -44,6 +47,8 @@ class IASFrontEnd
             sf::RectangleShape m_bg;
             sf::Text m_memLocationDisplay;
             sf::Text m_memoryValueDiplay;
+
+            int currentValue = 0;
     };
 
     public:
@@ -71,6 +76,7 @@ class IASFrontEnd
 
         Section m_registerSect;
         Section m_instructionSect;
+        Section m_memorySect;
 
         std::vector<sf::Text> m_registerDisplay;
         std::vector<sf::Text> m_registerValueDisplay;

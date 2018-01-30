@@ -27,11 +27,12 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
     initRegisterDisplay();
     initInstructionDisplay();
 
+    m_memorySect.init("Memory", {MEM_GUI_X - 15, MEM_GUI_Y - 25}, {670, 400}, m_mainFont);
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
-            m_memoryCells.emplace_back(x * 8 + y,
-                                       x * MemoryCell::XSIZE + 510 + x * 10,
-                                       y * MemoryCell::YSIZE + 190,
+            m_memoryCells.emplace_back(y * 4 + x,
+                                       x * MemoryCell::XSIZE + MEM_GUI_X + x * 10,
+                                       y * MemoryCell::YSIZE + MEM_GUI_Y + y * 5,
                                        m_mainFont);
         }
     }
@@ -113,11 +114,12 @@ void IASFrontEnd::updateInstructionDisplay()
     addrDisp.setString(getDecAndBinString(address));
 }
 
+//Updates the values stored at the memory addresses
 void IASFrontEnd::updateMemoryDisplay()
 {
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
-            int location = x * 8 + y;
+            int location = y * 4 + x;
             m_memoryCells[location].update(m_iasComputer.getMemory()[location]);
         }
     }
@@ -128,6 +130,7 @@ void IASFrontEnd::render()
 {
     m_registerSect      .draw(m_window);
     m_instructionSect   .draw(m_window);
+    m_memorySect        .draw(m_window);
 
     for (int i = 0; i < NUM_REGISTERS; i++) {
         m_window.draw(m_registerDisplay[i]);
@@ -240,24 +243,31 @@ IASFrontEnd::MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::
     m_bg.move    (x, y);
 
     m_bg.setOutlineThickness(2);
-    m_bg.setOutlineColor({150, 150, 150});
-    m_bg.setFillColor({100, 100, 100});
+    m_bg.setOutlineColor    ({170, 170, 170});
+    m_bg.setFillColor       ({80, 80, 80});
 
-    m_memLocationDisplay.setCharacterSize(12);
-    m_memoryValueDiplay .setCharacterSize(12);
+    m_memLocationDisplay.setCharacterSize(10);
+    m_memoryValueDiplay .setCharacterSize(14);
 
     m_memLocationDisplay.setFont(font);
     m_memoryValueDiplay.setFont(font);
 
     m_memLocationDisplay.setString(std::to_string(memoryLocation));
 
-    m_memLocationDisplay.move(x, y);
-    m_memoryValueDiplay.move(x + 10, y);
+    m_memLocationDisplay.move (x + 5 , y + 2);
+    m_memoryValueDiplay .move (x + 20, y + 10);
 }
 
 void IASFrontEnd::MemoryCell::update(Word newValue)
 {
     m_memoryValueDiplay.setString(getDecAndBinString(newValue));
+    if (newValue != currentValue) {
+        currentValue = newValue;
+        m_bg.setOutlineColor(sf::Color::Red);
+    }
+    else {
+        m_bg.setOutlineColor ({170, 170, 170});
+    }
 }
 
 void IASFrontEnd::MemoryCell::draw(sf::RenderWindow& window)
