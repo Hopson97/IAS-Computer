@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 
     Memory memory = IASAssembler().assembleFile(fileName.c_str());
     IASFrontEnd app(memory);
-    app.run();
+    app.run(false);
 
     std::cout << "\nProgram terminated.\nPress any key to exit.\n";
     std::cin.ignore();std::cin.ignore();

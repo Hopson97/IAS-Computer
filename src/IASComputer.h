@@ -33,12 +33,14 @@ class IASComputer
 
         const Memory& getMemory () const { return m_memory; }
 
-        Registers getRegisters  () const { return m_registers;}
+        //Registers getRegisters  () const { return m_registers;}
 
-    private:
+        const RegType* getFirstRegister() const { return &m_registers.accumulator; }
+
         void fetch();
         void execute();
 
+    private:
         //IAS Custom Instruction Set
         void add        ();
         void subtract   ();
