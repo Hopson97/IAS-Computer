@@ -5,6 +5,10 @@
 
 #include "../IASComputer.h"
 
+#include "MemoryCell.h"
+#include "NormalCell.h"
+#include "Section.h"
+
 std::string getDecAndBinString(Word value);
 
 class IASFrontEnd
@@ -22,58 +26,6 @@ class IASFrontEnd
     constexpr static int IO_GUI_Y  = 400;
 
     constexpr static int TEXT_HEIGHT = 30;
-
-    class Section
-    {
-        public:
-            void init(const std::string& title, const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font);
-
-            void draw(sf::RenderWindow& window);
-
-        private:
-            sf::RectangleShape m_background;
-            sf::Text m_titleText;
-    };
-
-    //Class to represent the display of a title, and a value
-    //For example, "Opcode: 4 00000100"
-    class NormalCell
-    {
-        public:
-            NormalCell(sf::Font& font, const std::string& title, int valueXOffset);
-
-            void update(Word newValue);
-            void update(const std::string& newValue);
-            void draw(sf::RenderWindow& window);
-
-            void moveText(int x, int y);
-
-        private:
-            sf::Text m_title;
-            sf::Text m_valueDisplay;
-
-            int m_currentValue;
-    };
-
-    //Class to represent the display of a memory address cell
-    class MemoryCell
-    {
-        public:
-            MemoryCell(int memoryLocation, int x, int y, const sf::Font& font);
-
-            void update (Word newValue);
-            void draw   (sf::RenderWindow& window);
-
-            constexpr static int XSIZE = 160;
-            constexpr static int YSIZE = 45;
-
-        private:
-            sf::RectangleShape m_bg;
-            sf::Text m_memLocationDisplay;
-            sf::Text m_memoryValueDiplay;
-
-            int currentValue = 0;
-    };
 
     public:
         IASFrontEnd(const Memory& memory);

@@ -67,8 +67,11 @@
 		<Unit filename="src/GUI/IASFrontEnd.cpp" />
 		<Unit filename="src/GUI/IASFrontEnd.h" />
 		<Unit filename="src/GUI/MemoryCell.cpp" />
+		<Unit filename="src/GUI/MemoryCell.h" />
 		<Unit filename="src/GUI/NormalCell.cpp" />
+		<Unit filename="src/GUI/NormalCell.h" />
 		<Unit filename="src/GUI/Section.cpp" />
+		<Unit filename="src/GUI/Section.h" />
 		<Unit filename="src/IASAssembler.cpp" />
 		<Unit filename="src/IASAssembler.h" />
 		<Unit filename="src/IASComputer.cpp" />

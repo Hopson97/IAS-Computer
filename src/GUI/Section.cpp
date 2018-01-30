@@ -1,6 +1,6 @@
 #include "IASFrontEnd.h"
 
-void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
+void Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
 {
     m_titleText.setOutlineThickness(2);
     m_titleText.setFillColor({0, 200, 200});
@@ -18,7 +18,7 @@ void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& p
     m_titleText.setString   (title);
 }
 
-void IASFrontEnd::Section::draw(sf::RenderWindow& window)
+void Section::draw(sf::RenderWindow& window)
 {
     window.draw(m_background);
     window.draw(m_titleText);

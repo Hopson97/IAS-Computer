@@ -1,6 +1,6 @@
 #include "IASFrontEnd.h"
 
-IASFrontEnd::MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
+MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
 {
     m_bg.setSize ({MemoryCell::XSIZE, MemoryCell::YSIZE});
     m_bg.move    (x, y);
@@ -21,7 +21,7 @@ IASFrontEnd::MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::
     m_memoryValueDiplay .move (x + 20, y + 10);
 }
 
-void IASFrontEnd::MemoryCell::update(Word newValue)
+void MemoryCell::update(Word newValue)
 {
     m_memoryValueDiplay.setString(getDecAndBinString(newValue));
     if (newValue != currentValue) {
@@ -33,7 +33,7 @@ void IASFrontEnd::MemoryCell::update(Word newValue)
     }
 }
 
-void IASFrontEnd::MemoryCell::draw(sf::RenderWindow& window)
+void MemoryCell::draw(sf::RenderWindow& window)
 {
     window.draw(m_bg);
     window.draw(m_memLocationDisplay);
