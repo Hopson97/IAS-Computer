@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IASCOMPUTER_H
+#define IASCOMPUTER_H
 
 #include <array>
 #include <functional>
@@ -52,3 +53,5 @@ class IASComputer
         RegType IOAddressRegister = 0;
         RegType IOBufferRegister = 0;
 };
+
+#endif // IASCOMPUTER_H
