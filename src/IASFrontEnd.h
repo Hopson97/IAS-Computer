@@ -8,6 +8,18 @@
 
 class IASFrontEnd
 {
+    class Section
+    {
+        public:
+            void init(const std::string& title, const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font);
+
+            void draw(sf::RenderWindow& window);
+
+        private:
+            sf::RectangleShape m_background;
+            sf::Text m_titleText;
+    };
+
     public:
         IASFrontEnd(const Memory& memory);
 
@@ -16,6 +28,7 @@ class IASFrontEnd
     private:
         void tryCloseWindow();
         void updateRegisterDisplay();
+        void cycleComputer();
         void render();
 
         void initRegisterDisplay();
@@ -24,6 +37,8 @@ class IASFrontEnd
         sf::Font            m_mainFont;
 
         IASComputer m_iasComputer;
+
+        Section m_registerSect;
 
         std::vector<sf::Text> m_registerDisplay;
         std::vector<sf::Text> m_registerValueDisplay;

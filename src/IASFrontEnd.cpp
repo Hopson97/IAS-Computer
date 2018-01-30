@@ -22,21 +22,14 @@ void IASFrontEnd::run(bool useGui)
     if (useGui) {
         sf::Clock c;
         while (m_window.isOpen()) {
-
             m_window.clear();
 
             //Cycle every n seconds, updates display in process
             if (c.getElapsedTime() > sf::seconds(0.75)) {
-                m_iasComputer.fetch();
-                updateRegisterDisplay();
-                m_iasComputer.execute();
+                cycleComputer();
                 c.restart();
             }
-
-            for (int i = 0; i < NUM_REGISTERS; i++) {
-                m_window.draw(m_registerDisplay[i]);
-                m_window.draw(m_registerValueDisplay[i]);
-            }
+            render();
 
             m_window.display();
             tryCloseWindow();
@@ -73,9 +66,19 @@ void IASFrontEnd::updateRegisterDisplay()
     }
 }
 
+//Does 1 fetch-execute cycle
+void IASFrontEnd::cycleComputer()
+{
+    m_iasComputer.fetch();
+    updateRegisterDisplay();
+    m_iasComputer.execute();
+}
+
 //Renders the displays
 void IASFrontEnd::render()
 {
+    m_registerSect.draw(m_window);
+
     for (int i = 0; i < NUM_REGISTERS; i++) {
         m_window.draw(m_registerDisplay[i]);
         m_window.draw(m_registerValueDisplay[i]);
@@ -110,6 +113,33 @@ void IASFrontEnd::initRegisterDisplay()
         m_registerValueDisplay[y].setCharacterSize(charSize);
         m_registerValueDisplay[y].move(280, 20 + y * textHeight);
     }
+
+    m_registerSect.init("Registers", {0, 0}, {450, 230}, m_mainFont);
+}
+
+void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
+{
+    m_titleText.setFillColor({200, 200, 200});
+    m_titleText.setStyle(0);
+    m_titleText.setCharacterSize(17);
+
+    m_background.setSize(size);
+    m_background.setPosition(position);
+
+    m_background.setOutlineThickness(2);
+    m_background.setOutlineColor({150, 150, 150});
+    m_background.setFillColor({100, 100, 100});
+
+    m_titleText.setFont (font);
+    m_titleText.move    (position);
+    m_titleText.setString(title);
+}
+
+void IASFrontEnd::Section::draw(sf::RenderWindow& window)
+{
+    window.draw(m_background);
+    window.draw(m_titleText);
+
 }
 
 
