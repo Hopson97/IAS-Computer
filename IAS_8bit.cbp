@@ -64,6 +64,9 @@
 		<Unit filename="sfml-window-d-2.dll" />
 		<Unit filename="src/Colour.cpp" />
 		<Unit filename="src/Colour.h" />
+		<Unit filename="src/GUI/NormalCell.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="src/IASAssembler.cpp" />
 		<Unit filename="src/IASAssembler.h" />
 		<Unit filename="src/IASComputer.cpp" />

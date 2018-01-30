@@ -7,15 +7,14 @@
 #include <chrono>
 #include <iostream>
 
-namespace
+
+std::string getDecAndBinString(Word value)
 {
-    auto getDecAndBinString(Word value)
-    {
-        std::ostringstream stream;
-        stream << std::setw(4) << (int)value << " " << std::bitset<8>(value);
-        return stream.str();
-    }
+    std::ostringstream stream;
+    stream << std::setw(4) << (int)value << " " << std::bitset<8>(value);
+    return stream.str();
 }
+
 
 IASFrontEnd::IASFrontEnd(const Memory& memory)
 :   m_window        ({1280, 720}, "8-bit IAS Computer")
@@ -184,9 +183,6 @@ void IASFrontEnd::initRegisterDisplay()
 
 void IASFrontEnd::initInstructionDisplay()
 {
-    int charSize = 15;
-    sf::Font& f = m_mainFont;
-
     m_instructionDisplay.emplace_back(m_mainFont, "     Opcode: ", 125);
     m_instructionDisplay.emplace_back(m_mainFont, "    Address: ", 125);
     m_instructionDisplay.emplace_back(m_mainFont, "Description: ", 125);
@@ -196,115 +192,4 @@ void IASFrontEnd::initInstructionDisplay()
     }
     m_instructionSect.init("Opcode and Address", {INS_GUI_X, INS_GUI_Y}, {1000, 130}, m_mainFont);
 }
-
-
-void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
-{
-    m_titleText.setOutlineThickness(1);
-    m_titleText.setFillColor({200, 200, 200});
-    m_titleText.setCharacterSize(17);
-
-    m_background.setSize(size);
-    m_background.setPosition(position);
-
-    m_background.setOutlineThickness(2);
-    m_background.setOutlineColor({150, 150, 150});
-    m_background.setFillColor({100, 100, 100});
-
-    m_titleText.setFont     (font);
-    m_titleText.move        (position);
-    m_titleText.setString   (title);
-}
-
-void IASFrontEnd::Section::draw(sf::RenderWindow& window)
-{
-    window.draw(m_background);
-    window.draw(m_titleText);
-
-}
-
-
-IASFrontEnd::MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
-{
-    m_bg.setSize ({MemoryCell::XSIZE, MemoryCell::YSIZE});
-    m_bg.move    (x, y);
-
-    m_bg.setOutlineThickness(2);
-    m_bg.setOutlineColor    ({170, 170, 170});
-    m_bg.setFillColor       ({80, 80, 80});
-
-    m_memLocationDisplay.setCharacterSize(10);
-    m_memoryValueDiplay .setCharacterSize(14);
-
-    m_memLocationDisplay.setFont(font);
-    m_memoryValueDiplay.setFont(font);
-
-    m_memLocationDisplay.setString(std::to_string(memoryLocation));
-
-    m_memLocationDisplay.move (x + 5 , y + 2);
-    m_memoryValueDiplay .move (x + 20, y + 10);
-}
-
-void IASFrontEnd::MemoryCell::update(Word newValue)
-{
-    m_memoryValueDiplay.setString(getDecAndBinString(newValue));
-    if (newValue != currentValue) {
-        currentValue = newValue;
-        m_bg.setOutlineColor(sf::Color::Red);
-    }
-    else {
-        m_bg.setOutlineColor ({170, 170, 170});
-    }
-}
-
-void IASFrontEnd::MemoryCell::draw(sf::RenderWindow& window)
-{
-    window.draw(m_bg);
-    window.draw(m_memLocationDisplay);
-    window.draw(m_memoryValueDiplay);
-}
-
-IASFrontEnd::NormalCell::NormalCell(sf::Font& font, const std::string& title, int valueXOffset)
-{
-    m_title.setString(title);
-    m_title.setFont(font);
-    m_valueDisplay.setFont(font);
-
-    m_title.setCharacterSize(15);
-    m_valueDisplay.setCharacterSize(15);
-
-    m_valueDisplay.move(valueXOffset, 0);
-}
-
-void IASFrontEnd::NormalCell::update(Word newValue)
-{
-    m_valueDisplay.setString(getDecAndBinString(newValue));
-    if (newValue != m_currentValue) {
-        m_currentValue = newValue;
-        m_valueDisplay.setFillColor(sf::Color::Red);
-    }
-    else {
-        m_valueDisplay.setFillColor(sf::Color::White);
-    }
-}
-
-void IASFrontEnd::NormalCell::update(const std::string& newValue)
-{
-    m_valueDisplay.setString(newValue);
-}
-
-
-void IASFrontEnd::NormalCell::draw(sf::RenderWindow& window)
-{
-    window.draw(m_title);
-    window.draw(m_valueDisplay);
-}
-
-void IASFrontEnd::NormalCell::moveText(int x, int y)
-{
-    m_title         .move(x, y);
-    m_valueDisplay  .move(x, y);
-}
-
-
 

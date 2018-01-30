@@ -3,8 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "IASComputer.h"
+#include "../IASComputer.h"
 
+std::string getDecAndBinString(Word value);
 
 class IASFrontEnd
 {
