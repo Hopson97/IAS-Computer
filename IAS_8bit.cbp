@@ -64,6 +64,8 @@
 		<Unit filename="sfml-window-d-2.dll" />
 		<Unit filename="src/Colour.cpp" />
 		<Unit filename="src/Colour.h" />
+		<Unit filename="src/IASApp.cpp" />
+		<Unit filename="src/IASApp.h" />
 		<Unit filename="src/IASAssembler.cpp" />
 		<Unit filename="src/IASAssembler.h" />
 		<Unit filename="src/IASComputer.cpp" />
