@@ -30,7 +30,7 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
     m_memorySect.init("Memory", {MEM_GUI_X - 15, MEM_GUI_Y - 25}, {670, 400}, m_mainFont);
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
-            m_memoryCells.emplace_back(y * 4 + x,
+            m_memoryCells.emplace_back(x * 8 + y,
                                        x * MemoryCell::XSIZE + MEM_GUI_X + x * 10,
                                        y * MemoryCell::YSIZE + MEM_GUI_Y + y * 5,
                                        m_mainFont);
@@ -119,8 +119,7 @@ void IASFrontEnd::updateMemoryDisplay()
 {
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
-            int location = y * 4 + x;
-            m_memoryCells[location].update(m_iasComputer.getMemory()[location]);
+            m_memoryCells[y * 4 + x].update(m_iasComputer.getMemory()[x * 8 + y]);
         }
     }
 }
