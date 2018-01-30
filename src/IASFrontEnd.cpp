@@ -117,25 +117,21 @@ void IASFrontEnd::updateDisplays()
 void IASFrontEnd::updateRegisterDisplay()
 {
     auto* start = m_iasComputer.getFirstRegister(); //Get pointer to first register
+
     for (int i = 0; i < NUM_REGISTERS; i++) {
-        std::ostringstream stream;
         Word value = *(start + i);  //Offset pointer by "i", to find correct value
-        m_registerValueDisplay[i].setString(getDecAndBinString(value));
+        m_registerDisplay[i].update(value);
     }
 }
 
 void IASFrontEnd::updateInstructionDisplay()
 {
-    auto& instrDisp = m_instructionDisplays[0].second;
-    auto& addrDisp  = m_instructionDisplays[1].second;
-    auto& descDisp  = m_instructionDisplays[2].second;
-
     Word opcode         = m_iasComputer.getOpcodeFromInstr();
     Word address        = m_iasComputer.getMemAddrFromInstr();
-    descDisp.setString(opcodeString.at(opcode));
 
-    instrDisp.setString(getDecAndBinString(opcode));
-    addrDisp.setString(getDecAndBinString(address));
+    m_instructionDisplay[0].update(opcode);
+    m_instructionDisplay[1].update(address);
+    m_instructionDisplay[2].update(opcodeString.at(opcode));
 }
 
 //Updates the values stored at the memory addresses
@@ -151,18 +147,16 @@ void IASFrontEnd::updateMemoryDisplay()
 //Renders the displays
 void IASFrontEnd::render()
 {
+    m_memorySect        .draw(m_window);
     m_registerSect      .draw(m_window);
     m_instructionSect   .draw(m_window);
-    m_memorySect        .draw(m_window);
 
-    for (int i = 0; i < NUM_REGISTERS; i++) {
-        m_window.draw(m_registerDisplay[i]);
-        m_window.draw(m_registerValueDisplay[i]);
+    for (auto& regDisplay : m_registerDisplay) {
+        regDisplay.draw(m_window);
     }
 
-    for (int i = 0; i < 3; i++) {
-        m_window.draw(m_instructionDisplays[i].first);
-        m_window.draw(m_instructionDisplays[i].second);
+    for (auto& instrDisp : m_instructionDisplay) {
+        instrDisp.draw(m_window);
     }
 
     for (auto& memoryCell : m_memoryCells) {
@@ -172,29 +166,17 @@ void IASFrontEnd::render()
 
 void IASFrontEnd::initRegisterDisplay()
 {
-    int charSize = 15;
-    sf::Font& f = m_mainFont;
+    m_registerDisplay.emplace_back(m_mainFont, "   Accumulator Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, " Memory Buffer Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "Memory Address Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "   Instruction Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "        Program Counter: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "    IO Address Register: ", 260);
+    m_registerDisplay.emplace_back(m_mainFont, "     IO Buffer Register: ", 260);
 
-    m_registerDisplay.emplace_back("   Accumulator Register: ", f);
-    m_registerDisplay.emplace_back(" Memory Buffer Register: ", f);
-    m_registerDisplay.emplace_back("Memory Address Register: ", f);
-    m_registerDisplay.emplace_back("   Instruction Register: ", f);
-    m_registerDisplay.emplace_back("        Program Counter: ", f);
-    m_registerDisplay.emplace_back("    IO Address Register: ", f);
-    m_registerDisplay.emplace_back("     IO Buffer Register: ", f);
-
-    for (int i = 0; i < NUM_REGISTERS; i++) {
-        m_registerValueDisplay.emplace_back("Not Used Yet", f);
-    }
-
-    //Move the display texts into the correct location
     for (int y = 0; y < NUM_REGISTERS; y++) {
         float yPosition = REG_GUI_Y + 20 + y * TEXT_HEIGHT;
-        m_registerDisplay[y].setCharacterSize(charSize);
-        m_registerDisplay[y].move(REG_GUI_X, yPosition);
-
-        m_registerValueDisplay[y].setCharacterSize(charSize);
-        m_registerValueDisplay[y].move(REG_GUI_X + 260, yPosition);
+        m_registerDisplay[y].moveText(REG_GUI_X, yPosition);
     }
 
     m_registerSect.init("Registers", {REG_GUI_X, REG_GUI_Y}, {460, 230}, m_mainFont);
@@ -205,31 +187,13 @@ void IASFrontEnd::initInstructionDisplay()
     int charSize = 15;
     sf::Font& f = m_mainFont;
 
-    //init the text objects
-    sf::Text opcode         ("     Opcode: ", f);
-    sf::Text address        ("    Address: ", f);
-    sf::Text description    ("Description: ", f);
-    sf::Text opcodeVal      ("", f);
-    sf::Text addressVal     ("", f);
-    sf::Text descVal        ("", f);
+    m_instructionDisplay.emplace_back(m_mainFont, "     Opcode: ", 125);
+    m_instructionDisplay.emplace_back(m_mainFont, "    Address: ", 125);
+    m_instructionDisplay.emplace_back(m_mainFont, "Description: ", 125);
 
-    //Add them to the vector
-    m_instructionDisplays.insert(m_instructionDisplays.end(), {
-        std::make_pair(opcode,      opcodeVal),
-        std::make_pair(address,     addressVal),
-        std::make_pair(description, descVal),
-    });
-
-    //Move to correct location
     for (int i = 0; i < 3; i++) {
-        auto& disp = m_instructionDisplays[i];
-        disp.first  .setCharacterSize(charSize);
-        disp.second .setCharacterSize(charSize);
-
-        disp.first  .move(INS_GUI_X,        INS_GUI_Y + 20 + i * TEXT_HEIGHT);
-        disp.second .move(INS_GUI_X + 125,  INS_GUI_Y + 20 + i * TEXT_HEIGHT);
+        m_instructionDisplay[i].moveText(INS_GUI_X, INS_GUI_Y + 20 + i * TEXT_HEIGHT);
     }
-
     m_instructionSect.init("Opcode and Address", {INS_GUI_X, INS_GUI_Y}, {1000, 130}, m_mainFont);
 }
 
@@ -298,6 +262,48 @@ void IASFrontEnd::MemoryCell::draw(sf::RenderWindow& window)
     window.draw(m_bg);
     window.draw(m_memLocationDisplay);
     window.draw(m_memoryValueDiplay);
+}
+
+IASFrontEnd::NormalCell::NormalCell(sf::Font& font, const std::string& title, int valueXOffset)
+{
+    m_title.setString(title);
+    m_title.setFont(font);
+    m_valueDisplay.setFont(font);
+
+    m_title.setCharacterSize(15);
+    m_valueDisplay.setCharacterSize(15);
+
+    m_valueDisplay.move(valueXOffset, 0);
+}
+
+void IASFrontEnd::NormalCell::update(Word newValue)
+{
+    m_valueDisplay.setString(getDecAndBinString(newValue));
+    if (newValue != m_currentValue) {
+        m_currentValue = newValue;
+        m_valueDisplay.setFillColor(sf::Color::Red);
+    }
+    else {
+        m_valueDisplay.setFillColor(sf::Color::White);
+    }
+}
+
+void IASFrontEnd::NormalCell::update(const std::string& newValue)
+{
+    m_valueDisplay.setString(newValue);
+}
+
+
+void IASFrontEnd::NormalCell::draw(sf::RenderWindow& window)
+{
+    window.draw(m_title);
+    window.draw(m_valueDisplay);
+}
+
+void IASFrontEnd::NormalCell::moveText(int x, int y)
+{
+    m_title         .move(x, y);
+    m_valueDisplay  .move(x, y);
 }
 
 

@@ -10,6 +10,11 @@ struct Test
 
 int main(int argc, char** argv)
 {
+
+
+
+
+
     std::string fileName = "tests/multiply.ias";
     if (argc > 1) {
         fileName = argv[1];

@@ -31,6 +31,24 @@ class IASFrontEnd
             sf::Text m_titleText;
     };
 
+    class NormalCell
+    {
+        public:
+            NormalCell(sf::Font& font, const std::string& title, int valueXOffset);
+
+            void update(Word newValue);
+            void update(const std::string& newValue);
+            void draw(sf::RenderWindow& window);
+
+            void moveText(int x, int y);
+
+        private:
+            sf::Text m_title;
+            sf::Text m_valueDisplay;
+
+            int m_currentValue;
+    };
+
     class MemoryCell
     {
         public:
@@ -81,12 +99,11 @@ class IASFrontEnd
         Section m_instructionSect;
         Section m_memorySect;
 
-        std::vector<sf::Text> m_registerDisplay;
-        std::vector<sf::Text> m_registerValueDisplay;
-
-        std::vector<std::pair<sf::Text, sf::Text>> m_instructionDisplays;
+        std::vector<NormalCell> m_registerDisplay;
+        std::vector<NormalCell> m_instructionDisplay;
 
         std::vector<MemoryCell> m_memoryCells;
+
 
 };
 
