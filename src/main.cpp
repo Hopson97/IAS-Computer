@@ -1,5 +1,5 @@
 #include <iostream>
-#include "IASApp.h"
+#include "IASFrontEnd.h"
 #include "IASAssembler.h"
 
 int main(int argc, char** argv)
@@ -10,7 +10,7 @@ int main(int argc, char** argv)
     }
 
     Memory memory = IASAssembler().assembleFile(fileName.c_str());
-    IASApp app(memory);
+    IASFrontEnd app(memory);
     app.run();
 
     std::cout << "\nProgram terminated.\nPress any key to exit.\n";

@@ -1,14 +1,14 @@
-#ifndef IASAPP_H_INCLUDED
-#define IASAPP_H_INCLUDED
+#ifndef IASFrontEnd_H_INCLUDED
+#define IASFrontEnd_H_INCLUDED
 
 #include <SFML/Graphics.hpp>
 
 #include "IASComputer.h"
 
-class IASApp
+class IASFrontEnd
 {
     public:
-        IASApp(const Memory& memory);
+        IASFrontEnd(const Memory& memory);
 
         void run();
 
@@ -21,4 +21,4 @@ class IASApp
         IASComputer         m_iasComputer;
 };
 
-#endif // IASAPP_H_INCLUDED
+#endif // IASFrontEnd_H_INCLUDED

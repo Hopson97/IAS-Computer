@@ -1,13 +1,13 @@
-#include "IASApp.h"
+#include "IASFrontEnd.h"
 
-IASApp::IASApp(const Memory& memory)
+IASFrontEnd::IASFrontEnd(const Memory& memory)
 :   m_window        ({1280, 720}, "8-bit IAS Computer")
 ,   m_iasComputer   (memory)
 {
 
 }
 
-void IASApp::run()
+void IASFrontEnd::run()
 {
     while (m_window.isOpen()) {
 
@@ -21,7 +21,7 @@ void IASApp::run()
 
 
 //Check if user has closed window
-void IASApp::tryCloseWindow()
+void IASFrontEnd::tryCloseWindow()
 {
     sf::Event e;
     while (m_window.pollEvent(e)) {
