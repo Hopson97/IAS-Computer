@@ -15,7 +15,7 @@ class IASFrontEnd
     constexpr static int INS_GUI_Y = 20;
 
     constexpr static int MEM_GUI_X = 510;
-    constexpr static int MEM_GUI_Y = 190;
+    constexpr static int MEM_GUI_Y = 185;
 
     constexpr static int TEXT_HEIGHT = 30;
 
@@ -59,6 +59,7 @@ class IASFrontEnd
     private:
         void tryCloseWindow();
 
+        void updateDisplays             ();
         void updateRegisterDisplay      ();
         void updateInstructionDisplay   ();
         void updateMemoryDisplay        ();
@@ -68,6 +69,8 @@ class IASFrontEnd
 
         void initRegisterDisplay();
         void initInstructionDisplay();
+
+        float tickDelay 1.0f;
 
         sf::RenderWindow    m_window;
         sf::Font            m_mainFont;

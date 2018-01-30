@@ -43,14 +43,20 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
 void IASFrontEnd::run(bool useGui)
 {
     if (useGui) {
+        int ticks = 0;
         sf::Clock c;
         while (m_window.isOpen()) {
             m_window.clear();
 
             //Cycle every n seconds, updates display in process
-            if (c.getElapsedTime() > sf::seconds(2)) {
-                cycleComputer();
+            if (c.getElapsedTime() > sf::seconds(tickDelay)) {
+                if (ticks % 2 == 0) {
+                    cycleComputer();
+                } else {
+                    updateDisplays();
+                }
                 c.restart();
+                ticks++;
             }
             render();
 
@@ -70,11 +76,9 @@ void IASFrontEnd::run(bool useGui)
 void IASFrontEnd::cycleComputer()
 {
     m_iasComputer.fetch();
-
     updateRegisterDisplay();
     updateInstructionDisplay();
     updateMemoryDisplay();
-
     m_iasComputer.execute();
 }
 
@@ -88,6 +92,14 @@ void IASFrontEnd::tryCloseWindow()
         }
     }
 }
+
+void IASFrontEnd::updateDisplays()
+{
+    updateRegisterDisplay();
+    updateInstructionDisplay();
+    updateMemoryDisplay();
+}
+
 
 //Updates the values of the register displays to those stored in the IAS computer
 void IASFrontEnd::updateRegisterDisplay()
