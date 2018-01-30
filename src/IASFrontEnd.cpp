@@ -5,6 +5,17 @@
 #include <bitset>
 #include <thread>
 #include <chrono>
+#include <iostream>
+
+namespace
+{
+    auto getDecAndBinString(Word value)
+    {
+        std::ostringstream stream;
+        stream << std::setw(4) << (int)value << " " << std::bitset<8>(value);
+        return stream.str();
+    }
+}
 
 IASFrontEnd::IASFrontEnd(const Memory& memory)
 :   m_window        ({1280, 720}, "8-bit IAS Computer")
@@ -14,6 +25,7 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
     m_mainFont.loadFromFile("res/Anonymous.ttf");
 
     initRegisterDisplay();
+    initInstructionDisplay();
 }
 
 //Runs the computer, either using CLI or GUI
@@ -40,7 +52,9 @@ void IASFrontEnd::run(bool useGui)
         m_window.close();
         m_iasComputer.run();
     }
+    m_window.close();
 }
+
 
 
 //Check if user has closed window
@@ -61,27 +75,50 @@ void IASFrontEnd::updateRegisterDisplay()
     for (int i = 0; i < NUM_REGISTERS; i++) {
         std::ostringstream stream;
         Word value = *(start + i);  //Offset pointer by "i", to find correct value
-        stream << std::setw(4) << (int)value << " " << std::bitset<8>(value);
-        m_registerValueDisplay[i].setString(stream.str());
+        m_registerValueDisplay[i].setString(getDecAndBinString(value));
     }
 }
+
+void IASFrontEnd::updateInstructionDisplay()
+{
+    auto& instrDisp = m_instructionDisplays[0].second;
+    auto& addrDisp  = m_instructionDisplays[1].second;
+    auto& descDisp  = m_instructionDisplays[2].second;
+
+    Word opcode         = m_iasComputer.getOpcodeFromInstr();
+    Word address        = m_iasComputer.getMemAddrFromInstr();
+    descDisp.setString(opcodeString.at(opcode));
+
+    instrDisp.setString(getDecAndBinString(opcode));
+    addrDisp.setString(getDecAndBinString(address));
+
+
+}
+
 
 //Does 1 fetch-execute cycle
 void IASFrontEnd::cycleComputer()
 {
     m_iasComputer.fetch();
     updateRegisterDisplay();
+    updateInstructionDisplay();
     m_iasComputer.execute();
 }
 
 //Renders the displays
 void IASFrontEnd::render()
 {
-    m_registerSect.draw(m_window);
+    m_registerSect      .draw(m_window);
+    m_instructionSect   .draw(m_window);
 
     for (int i = 0; i < NUM_REGISTERS; i++) {
         m_window.draw(m_registerDisplay[i]);
         m_window.draw(m_registerValueDisplay[i]);
+    }
+
+    for (int i = 0; i < 3; i++) {
+        m_window.draw(m_instructionDisplays[i].first);
+        m_window.draw(m_instructionDisplays[i].second);
     }
 }
 
@@ -102,25 +139,57 @@ void IASFrontEnd::initRegisterDisplay()
         m_registerValueDisplay.emplace_back("Not Used Yet", f);
     }
 
-    sf::Text temp("ABCDEFGHIJKLMNOPQRSTUVWXYZ", f);
-    auto textHeight = temp.getLocalBounds().height;
-    temp.setCharacterSize(charSize);
-
+    //Move the display texts into the correct location
     for (int y = 0; y < NUM_REGISTERS; y++) {
+        float yPosition = REG_GUI_Y + 20 + y * TEXT_HEIGHT;
         m_registerDisplay[y].setCharacterSize(charSize);
-        m_registerDisplay[y].move(20, 20 + y * textHeight);
+        m_registerDisplay[y].move(REG_GUI_X, yPosition);
 
         m_registerValueDisplay[y].setCharacterSize(charSize);
-        m_registerValueDisplay[y].move(280, 20 + y * textHeight);
+        m_registerValueDisplay[y].move(REG_GUI_X + 260, yPosition);
     }
 
-    m_registerSect.init("Registers", {0, 0}, {450, 230}, m_mainFont);
+    m_registerSect.init("Registers", {REG_GUI_X, REG_GUI_Y}, {460, 230}, m_mainFont);
 }
+
+void IASFrontEnd::initInstructionDisplay()
+{
+    int charSize = 15;
+    sf::Font& f = m_mainFont;
+
+    //init the text objects
+    sf::Text opcode         ("     Opcode: ", f);
+    sf::Text address        ("    Address: ", f);
+    sf::Text description    ("Description: ", f);
+    sf::Text opcodeVal      ("", f);
+    sf::Text addressVal     ("", f);
+    sf::Text descVal        ("", f);
+
+    //Add them to the vector
+    m_instructionDisplays.insert(m_instructionDisplays.end(), {
+        std::make_pair(opcode,      opcodeVal),
+        std::make_pair(address,     addressVal),
+        std::make_pair(description, descVal),
+    });
+
+    //Move to correct location
+    for (int i = 0; i < 3; i++) {
+        auto& disp = m_instructionDisplays[i];
+        disp.first  .setCharacterSize(charSize);
+        disp.second .setCharacterSize(charSize);
+
+        disp.first  .move(INS_GUI_X,        INS_GUI_Y + 20 + i * TEXT_HEIGHT);
+        disp.second .move(INS_GUI_X + 125,  INS_GUI_Y + 20 + i * TEXT_HEIGHT);
+    }
+
+    m_instructionSect.init("Opcode and Address", {INS_GUI_X, INS_GUI_Y}, {1000, 130}, m_mainFont);
+}
+
 
 void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
 {
+    m_titleText.setOutlineThickness(1);
     m_titleText.setFillColor({200, 200, 200});
-    m_titleText.setStyle(0);
     m_titleText.setCharacterSize(17);
 
     m_background.setSize(size);
@@ -130,9 +199,9 @@ void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& p
     m_background.setOutlineColor({150, 150, 150});
     m_background.setFillColor({100, 100, 100});
 
-    m_titleText.setFont (font);
-    m_titleText.move    (position);
-    m_titleText.setString(title);
+    m_titleText.setFont     (font);
+    m_titleText.move        (position);
+    m_titleText.setString   (title);
 }
 
 void IASFrontEnd::Section::draw(sf::RenderWindow& window)

@@ -8,6 +8,14 @@
 
 class IASFrontEnd
 {
+    constexpr static int REG_GUI_X = 20;
+    constexpr static int REG_GUI_Y = 160;
+
+    constexpr static int INS_GUI_X = 20;
+    constexpr static int INS_GUI_Y = 20;
+
+    constexpr static int TEXT_HEIGHT = 30;
+
     class Section
     {
         public:
@@ -20,6 +28,20 @@ class IASFrontEnd
             sf::Text m_titleText;
     };
 
+    class MemoryCell
+    {
+        public:
+            MemoryCell(int memoryLocation, int x, int y);
+
+            void update(newValue);
+            void draw(sf::RenderWindow& window);
+
+        private:
+            sf::RectangleShape m_bg;
+            sf::Text m_memLocationDisplay;
+            sf::Text m_memoryValueDiplay;
+    };
+
     public:
         IASFrontEnd(const Memory& memory);
 
@@ -27,11 +49,14 @@ class IASFrontEnd
 
     private:
         void tryCloseWindow();
-        void updateRegisterDisplay();
-        void cycleComputer();
-        void render();
+        void updateRegisterDisplay      ();
+        void updateInstructionDisplay   ();
+
+        void cycleComputer ();
+        void render ();
 
         void initRegisterDisplay();
+        void initInstructionDisplay();
 
         sf::RenderWindow    m_window;
         sf::Font            m_mainFont;
@@ -39,10 +64,12 @@ class IASFrontEnd
         IASComputer m_iasComputer;
 
         Section m_registerSect;
+        Section m_instructionSect;
 
         std::vector<sf::Text> m_registerDisplay;
         std::vector<sf::Text> m_registerValueDisplay;
 
+        std::vector<std::pair<sf::Text, sf::Text>> m_instructionDisplays;
 
 };
 

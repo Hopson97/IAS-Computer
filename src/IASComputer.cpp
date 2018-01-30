@@ -8,20 +8,6 @@
 
 //#define PRINT_STATE
 
-namespace
-{
-    const std::unordered_map<Word, std::string> opcodeString {
-        {0, "Add number at memory address to the accumulator." },
-        {1, "Subtract the number the at memory address from the accumulator." },
-        {2, "Store the number in the accumulator to the memory address." },
-        {3, "Load number from the memory address to the accumulator." },
-        {4, "Get user input, place result in the accumulator." },
-        {5, "Output the number stored in the accumulator." },
-        {6, "Set program counter to the memory address, given the accumulator's value is positive"},
-        {7, "Exit the program."},
-    };
-}
-
 IASComputer::IASComputer(const Memory& memory)
 :   m_memory        (memory)
 ,   m_commandMap {
@@ -33,6 +19,7 @@ IASComputer::IASComputer(const Memory& memory)
         {4, std::bind(IASComputer::input,       this)},
         {5, std::bind(IASComputer::output,      this)},
         {6, std::bind(IASComputer::jumpIfPos,   this)},
+        {7, std::bind(IASComputer::add,         this)},
     }
 {
     m_memory[31] = 1;
@@ -49,7 +36,7 @@ void IASComputer::run()
             break;
         }
 
-        fetch();    //FETCH
+        fetch(); //FETCH
 
         printMidCycleState();
 
