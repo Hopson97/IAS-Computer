@@ -3,6 +3,8 @@
 #include <sstream>
 #include <iomanip>
 #include <bitset>
+#include <thread>
+#include <chrono>
 
 IASFrontEnd::IASFrontEnd(const Memory& memory)
 :   m_window        ({1280, 720}, "8-bit IAS Computer")
@@ -14,6 +16,7 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
     initRegisterDisplay();
 }
 
+//Runs the computer, either using CLI or GUI
 void IASFrontEnd::run(bool useGui)
 {
     if (useGui) {
@@ -22,6 +25,7 @@ void IASFrontEnd::run(bool useGui)
 
             m_window.clear();
 
+            //Cycle every n seconds, updates display in process
             if (c.getElapsedTime() > sf::seconds(0.75)) {
                 m_iasComputer.fetch();
                 updateRegisterDisplay();
@@ -34,9 +38,9 @@ void IASFrontEnd::run(bool useGui)
                 m_window.draw(m_registerValueDisplay[i]);
             }
 
-
             m_window.display();
             tryCloseWindow();
+            if (m_iasComputer.getOpcodeFromInstr() == INSTRUCTION_END) break;
         }
     }
     else {
@@ -57,14 +61,24 @@ void IASFrontEnd::tryCloseWindow()
     }
 }
 
+//Updates the values of the register displays to those stored in the IAS computer
 void IASFrontEnd::updateRegisterDisplay()
 {
-    auto* start = m_iasComputer.getFirstRegister();
+    auto* start = m_iasComputer.getFirstRegister(); //Get pointer to first register
     for (int i = 0; i < NUM_REGISTERS; i++) {
         std::ostringstream stream;
-        Word value = *(start + i);
+        Word value = *(start + i);  //Offset pointer by "i", to find correct value
         stream << std::setw(4) << (int)value << " " << std::bitset<8>(value);
         m_registerValueDisplay[i].setString(stream.str());
+    }
+}
+
+//Renders the displays
+void IASFrontEnd::render()
+{
+    for (int i = 0; i < NUM_REGISTERS; i++) {
+        m_window.draw(m_registerDisplay[i]);
+        m_window.draw(m_registerValueDisplay[i]);
     }
 }
 

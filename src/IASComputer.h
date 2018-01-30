@@ -31,11 +31,12 @@ class IASComputer
         IASComputer(const Memory& memory);
         void run();
 
-        const Memory& getMemory () const { return m_memory; }
+        const Memory& getMemory             () const { return m_memory; }
+        const RegType* getFirstRegister     () const { return &m_registers.accumulator; }
 
-        //Registers getRegisters  () const { return m_registers;}
-
-        const RegType* getFirstRegister() const { return &m_registers.accumulator; }
+        Word getMemAddrFromInstr            () const;
+        Word getOpcodeFromInstr             () const;
+        Word getValueStoredAtInstrAddress   () const;
 
         void fetch();
         void execute();
@@ -49,10 +50,6 @@ class IASComputer
         void input      ();
         void output     ();
         void jumpIfPos  ();
-
-        Word getMemAddrFromInstr            () const;
-        Word getOpcodeFromInstr             () const;
-        Word getValueStoredAtInstrAddress   () const;
 
         void printMidCycleState     () const;
         void printOpcodeAndAddress  () const;

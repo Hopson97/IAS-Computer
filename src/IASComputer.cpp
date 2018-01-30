@@ -67,15 +67,6 @@ void IASComputer::fetch()
     m_registers.memoryAddress = m_registers.programCounter++;
     m_registers.memoryBuffer  = m_memory[m_registers.memoryAddress];
     m_registers.instruction   = m_registers.memoryBuffer;
-
-    /*
-    m_memAddressRegister    = m_programCounter++;
-    printFullState();
-    m_memBufferRegister     = m_memory[m_memAddressRegister];
-    printFullState();
-    m_instructionRegister   = m_memBufferRegister;
-    printFullState();
-    */
 }
 
 

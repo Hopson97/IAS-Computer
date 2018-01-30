@@ -16,6 +16,7 @@ class IASFrontEnd
     private:
         void tryCloseWindow();
         void updateRegisterDisplay();
+        void render();
 
         void initRegisterDisplay();
 
