@@ -2,8 +2,8 @@
 
 void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& position, const sf::Vector2f& size, const sf::Font& font)
 {
-    m_titleText.setOutlineThickness(1);
-    m_titleText.setFillColor({200, 200, 200});
+    m_titleText.setOutlineThickness(2);
+    m_titleText.setFillColor({0, 200, 200});
     m_titleText.setCharacterSize(17);
 
     m_background.setSize(size);
@@ -14,7 +14,7 @@ void IASFrontEnd::Section::init(const std::string& title,  const sf::Vector2f& p
     m_background.setFillColor({100, 100, 100});
 
     m_titleText.setFont     (font);
-    m_titleText.move        (position);
+    m_titleText.move        ({position.x + 5, position.y});
     m_titleText.setString   (title);
 }
 

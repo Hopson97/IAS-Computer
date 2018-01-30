@@ -64,8 +64,8 @@ class IASFrontEnd
             void update (Word newValue);
             void draw   (sf::RenderWindow& window);
 
-            constexpr static int XSIZE = 150;
-            constexpr static int YSIZE = 40;
+            constexpr static int XSIZE = 160;
+            constexpr static int YSIZE = 45;
 
         private:
             sf::RectangleShape m_bg;

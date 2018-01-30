@@ -26,11 +26,11 @@ IASFrontEnd::IASFrontEnd(const Memory& memory)
     initRegisterDisplay();
     initInstructionDisplay();
 
-    m_memorySect.init("Memory", {MEM_GUI_X - 15, MEM_GUI_Y - 25}, {670, 400}, m_mainFont);
+    m_memorySect.init("Memory", {MEM_GUI_X - 15, MEM_GUI_Y - 25}, {720, 430}, m_mainFont);
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
             m_memoryCells.emplace_back(x * 8 + y,
-                                       x * MemoryCell::XSIZE + MEM_GUI_X + x * 10,
+                                       x * MemoryCell::XSIZE + MEM_GUI_X + x * 15,
                                        y * MemoryCell::YSIZE + MEM_GUI_Y + y * 5,
                                        m_mainFont);
         }
