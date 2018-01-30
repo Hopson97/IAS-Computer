@@ -70,7 +70,7 @@ class IASFrontEnd
         void initRegisterDisplay();
         void initInstructionDisplay();
 
-        float tickDelay 1.0f;
+        float m_tickDelay = 1.0f;
 
         sf::RenderWindow    m_window;
         sf::Font            m_mainFont;

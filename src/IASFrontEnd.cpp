@@ -49,7 +49,7 @@ void IASFrontEnd::run(bool useGui)
             m_window.clear();
 
             //Cycle every n seconds, updates display in process
-            if (c.getElapsedTime() > sf::seconds(tickDelay)) {
+            if (c.getElapsedTime() > sf::seconds(m_tickDelay)) {
                 if (ticks % 2 == 0) {
                     cycleComputer();
                 } else {
@@ -89,6 +89,18 @@ void IASFrontEnd::tryCloseWindow()
     while (m_window.pollEvent(e)) {
         if (e.type == sf::Event::Closed) {
             m_window.close();
+        }
+        else if (e.type == sf::Event::KeyReleased) {
+            auto code = e.key.code;
+            if (code == sf::Keyboard::Left) {
+                m_tickDelay -= 0.1;
+                if (m_tickDelay <= 0) m_tickDelay = 0;
+                std::cout << m_tickDelay << "\n";
+            }
+            else if (code == sf::Keyboard::Right) {
+                m_tickDelay += 0.1;
+                std::cout << m_tickDelay << "\n";
+            }
         }
     }
 }
