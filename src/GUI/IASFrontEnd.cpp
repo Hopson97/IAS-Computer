@@ -140,7 +140,8 @@ void IASFrontEnd::updateMemoryDisplay()
 {
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 4; x++) {
-            m_memoryCells[y * 4 + x].update(m_iasComputer.getMemory()[x * 8 + y]);
+            m_memoryCells[y * 4 + x].update(m_iasComputer.getMemory()[x * 8 + y],
+                                            m_iasComputer.getAddressRegister());
         }
     }
 }
@@ -166,6 +167,9 @@ void IASFrontEnd::render()
     }
 }
 
+/*
+    Some functions to initilise the different sections of the user interface
+*/
 void IASFrontEnd::initRegisterDisplay()
 {
     m_registerDisplay.emplace_back(m_mainFont, "   Accumulator Register: ", 260);

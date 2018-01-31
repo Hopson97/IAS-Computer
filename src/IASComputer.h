@@ -46,6 +46,7 @@ class IASComputer
         const Memory& getMemory             () const { return m_memory; }
         const RegType* getFirstRegister     () const { return &m_registers.accumulator; }
         RegType getProgramCounter           () const { return m_registers.programCounter; }
+        RegType getAddressRegister          () const { return m_registers.memoryAddress; }
 
         Word getMemAddrFromInstr            () const;
         Word getOpcodeFromInstr             () const;

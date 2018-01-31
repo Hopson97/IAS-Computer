@@ -1,6 +1,7 @@
 #include "IASFrontEnd.h"
 
 MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
+:   m_memLocation   ((RegType)memoryLocation)
 {
     m_bg.setSize ({MemoryCell::XSIZE, MemoryCell::YSIZE});
     m_bg.move    (x, y);
@@ -21,16 +22,21 @@ MemoryCell::MemoryCell(int memoryLocation, int x, int y, const sf::Font& font)
     m_memoryValueDiplay .move (x + 20, y + 10);
 }
 
-void MemoryCell::update(Word newValue)
+void MemoryCell::update(Word newValue, RegType activeAddress)
 {
     m_memoryValueDiplay.setString(getDecAndBinString(newValue));
     if (newValue != currentValue) {
         currentValue = newValue;
         m_bg.setOutlineColor(sf::Color::Red);
     }
+    else if (activeAddress == m_memLocation) {
+        m_bg.setOutlineColor(sf::Color::Green);
+    }
     else {
         m_bg.setOutlineColor ({170, 170, 170});
     }
+
+
 }
 
 void MemoryCell::draw(sf::RenderWindow& window)

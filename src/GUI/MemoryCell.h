@@ -9,7 +9,7 @@ class MemoryCell
     public:
         MemoryCell(int memoryLocation, int x, int y, const sf::Font& font);
 
-        void update (Word newValue);
+        void update (Word newValue, RegType activeAddress);
         void draw   (sf::RenderWindow& window);
 
         constexpr static int XSIZE = 160;
@@ -21,6 +21,7 @@ class MemoryCell
         sf::Text m_memoryValueDiplay;
 
         int currentValue = 0;
+        RegType m_memLocation;
 };
 
 #endif // MEMCELL_H
