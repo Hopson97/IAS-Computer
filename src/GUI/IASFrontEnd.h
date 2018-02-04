@@ -63,6 +63,8 @@ class IASFrontEnd
 
         std::vector<MemoryCell> m_memoryCells;
 
+        bool m_doNextStep = false;
+
 
 };
 

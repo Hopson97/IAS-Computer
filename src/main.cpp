@@ -10,7 +10,7 @@ struct Test
 
 int main(int argc, char** argv)
 {
-    std::string fileName = "tests/multiply.ias";
+    std::string fileName = "tests/add.ias";
     if (argc > 1) {
         fileName = argv[1];
     }

@@ -49,8 +49,10 @@ void IASFrontEnd::run(bool useGui)
         while (m_window.isOpen()) {
             m_window.clear();
 
+            //m_doNextStep = c.getElapsedTime() > sf::seconds(m_tickDelay);
+
             //Cycle every n seconds, updates display in process
-            if (c.getElapsedTime() > sf::seconds(m_tickDelay)) {
+            if (m_doNextStep) {
                 if (ticks % 2 == 0) {
                     cycleComputer();
                 } else {
@@ -58,6 +60,7 @@ void IASFrontEnd::run(bool useGui)
                 }
                 c.restart();
                 ticks++;
+                m_doNextStep = false;
             }
             render();
 
@@ -102,6 +105,9 @@ void IASFrontEnd::tryCloseWindow()
                 m_tickDelay += 0.1;
                 std::cout << m_tickDelay << "\n";
             }
+            else if (code == sf::Keyboard::P) {
+                m_doNextStep = true;
+            }
         }
     }
 }
@@ -119,6 +125,7 @@ void IASFrontEnd::updateRegisterDisplay()
 {
     auto* start = m_iasComputer.getFirstRegister(); //Get pointer to first register
 
+    //On today's episode of "don't do this"
     for (int i = 0; i < NUM_REGISTERS; i++) {
         Word value = *(start + i);  //Offset pointer by "i", to find correct value
         m_registerDisplay[i].update(value);
