@@ -22,6 +22,10 @@ The computer has 3-bit instructions and 5-bit addresses.
 
 This allows up to 8 instructions, and up to 32 memory locations addressable.
 
+For example, `00100110` means "Adds the number stored in memory address `00110` to the accumulator register., because the first 3 bits is the opcode (in this case, 0x1), and the final 5 digits is the memory address (in this case, 0x6).
+
+
+
 
 | Name     | Opcode | Mnemonic | Description                                                                                                                    | Example |
 |----------|--------|----------|--------------------------------------------------------------------------------------------------------------------------------|---------|
