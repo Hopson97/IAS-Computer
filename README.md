@@ -32,4 +32,4 @@ This allows up to 8 instructions, and up to 32 memory locations addressable.
 | Input    | 0x4    | INP      | Gets user input, stores result in the accumulator register                                                                     | INP     |
 | Output   | 0x5    | OUT      | Outputs the number stored in the accumulator register                                                                          | OUT     |
 | Jump     | 0x6    | JIP      | If the value stored in the accumulator register is postive, this instruction will set the program counter to memory address XX | JIP XX  |
-| Exit     | 0x7    | END      | Ends the program
+| Exit     | 0x7    | END      | Ends the program                                                                                                               | END     |
