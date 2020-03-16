@@ -1,6 +1,7 @@
 #include "IASFrontEnd.h"
 
-NormalCell::NormalCell(sf::Font& font, const std::string& title, int valueXOffset)
+NormalCell::NormalCell(sf::Font &font, const std::string &title,
+                       int valueXOffset)
 {
     m_title.setString(title);
     m_title.setFont(font);
@@ -24,13 +25,12 @@ void NormalCell::update(Word newValue)
     }
 }
 
-void NormalCell::update(const std::string& newValue)
+void NormalCell::update(const std::string &newValue)
 {
     m_valueDisplay.setString(newValue);
 }
 
-
-void NormalCell::draw(sf::RenderWindow& window)
+void NormalCell::draw(sf::RenderWindow &window)
 {
     window.draw(m_title);
     window.draw(m_valueDisplay);
@@ -38,6 +38,6 @@ void NormalCell::draw(sf::RenderWindow& window)
 
 void NormalCell::moveText(int x, int y)
 {
-    m_title         .move(x, y);
-    m_valueDisplay  .move(x, y);
+    m_title.move(x, y);
+    m_valueDisplay.move(x, y);
 }

@@ -1,10 +1,4 @@
-# IAS 8-Bit Computer
-
-Simple computer based off a IAS model
-
-## Dependencies
-
-Requires C++14 and SFML 2.4.1+
+# ias-computer
 
 ## Registers
 
@@ -34,4 +28,47 @@ For example, `00100110` means "Adds the number stored in memory address `00110` 
 | Input    | 0x4    | INP      | Gets user input, stores result in the accumulator register                                                                     | INP     |
 | Output   | 0x5    | OUT      | Outputs the number stored in the accumulator register                                                                          | OUT     |
 | Jump     | 0x6    | JIP      | If the value stored in the accumulator register is postive, this instruction will set the program counter to memory address XX | JIP XX  |
-| Exit     | 0x7    | END      | Ends the program                                                                                                               | END     |
+| Exit     | 0x7    | END      | Ends the
+
+## Building and Running
+
+### Libraries
+
+SFML is required.
+
+These can be installed from your project manager. For example, on Debian/ Ubuntu:
+
+```sh
+sudo apt install libsfml-dev
+```
+
+If this is not possible (eg windows), you can install these manually from their respective websites:
+
+https://www.sfml-dev.org/download.php
+
+### Linux
+
+To build, at the root of the project:
+
+```sh
+sh scripts/build.sh
+```
+
+To run, at the root of the project:
+
+```sh
+sh scripts/run.sh
+```
+
+To build and run in release mode, simply add the `release` suffix:
+
+```sh
+sh scripts/build.sh release
+sh scripts/run.sh release
+```
+
+You can also create a deployable build (that can be sent) by doing:
+
+```sh
+sh scripts/deploy.sh
+```

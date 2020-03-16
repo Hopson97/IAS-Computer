@@ -1,14 +1,3 @@
-
-# Created by https://www.gitignore.io/api/codeblocks
-
-### CodeBlocks ###
-# specific to CodeBlocks IDE
-*.layout
-*.depend
-
-# generated directories
-bin/
-obj/
-
-
-*.dll
+# Project binaries
+/bin
+ias-computer

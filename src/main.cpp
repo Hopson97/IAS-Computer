@@ -1,16 +1,15 @@
-#include <iostream>
 #include "GUI/IASFrontEnd.h"
 #include "IASAssembler.h"
+#include <iostream>
 
-struct Test
-{
+struct Test {
     int x = 10;
     int y = 5;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    std::string fileName = "tests/add.ias";
+    std::string fileName = "tests/multiply.ias";
     if (argc > 1) {
         fileName = argv[1];
     }
@@ -20,7 +19,8 @@ int main(int argc, char** argv)
     app.run(true);
 
     std::cout << "\nProgram terminated.\nPress any key to exit.\n";
-    std::cin.ignore();std::cin.ignore();
+    std::cin.ignore();
+    std::cin.ignore();
 
     return 0;
 }

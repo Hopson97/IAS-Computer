@@ -11,8 +11,7 @@
 
 std::string getDecAndBinString(Word value);
 
-class IASFrontEnd
-{
+class IASFrontEnd {
     constexpr static int REG_GUI_X = 20;
     constexpr static int REG_GUI_Y = 160;
 
@@ -22,50 +21,48 @@ class IASFrontEnd
     constexpr static int MEM_GUI_X = 510;
     constexpr static int MEM_GUI_Y = 185;
 
-    constexpr static int IO_GUI_X  = REG_GUI_X;
-    constexpr static int IO_GUI_Y  = 400;
+    constexpr static int IO_GUI_X = REG_GUI_X;
+    constexpr static int IO_GUI_Y = 400;
 
     constexpr static int TEXT_HEIGHT = 30;
 
-    public:
-        IASFrontEnd(const Memory& memory);
+  public:
+    IASFrontEnd(const Memory &memory);
 
-        void run(bool useGui);
+    void run(bool useGui);
 
-    private:
-        void tryCloseWindow();
+  private:
+    void tryCloseWindow();
 
-        void updateDisplays             ();
-        void updateRegisterDisplay      ();
-        void updateInstructionDisplay   ();
-        void updateMemoryDisplay        ();
+    void updateDisplays();
+    void updateRegisterDisplay();
+    void updateInstructionDisplay();
+    void updateMemoryDisplay();
 
-        void cycleComputer ();
-        void render ();
+    void cycleComputer();
+    void render();
 
-        void initRegisterDisplay();
-        void initInstructionDisplay();
+    void initRegisterDisplay();
+    void initInstructionDisplay();
 
-        float m_tickDelay = 1.0f;
+    float m_tickDelay = 1.0f;
 
-        sf::RenderWindow    m_window;
-        sf::Font            m_mainFont;
+    sf::RenderWindow m_window;
+    sf::Font m_mainFont;
 
-        IASComputer m_iasComputer;
+    IASComputer m_iasComputer;
 
-        Section m_registerSect;
-        Section m_instructionSect;
-        Section m_memorySect;
-        Section m_sectionIO;
+    Section m_registerSect;
+    Section m_instructionSect;
+    Section m_memorySect;
+    Section m_sectionIO;
 
-        std::vector<NormalCell> m_registerDisplay;
-        std::vector<NormalCell> m_instructionDisplay;
+    std::vector<NormalCell> m_registerDisplay;
+    std::vector<NormalCell> m_instructionDisplay;
 
-        std::vector<MemoryCell> m_memoryCells;
+    std::vector<MemoryCell> m_memoryCells;
 
-        bool m_doNextStep = false;
-
-
+    bool m_doNextStep = false;
 };
 
 #endif // IASFrontEnd_H_INCLUDED
